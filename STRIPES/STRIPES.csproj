@@ -1,0 +1,34 @@
+﻿<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-desktop</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+	<OutputType Condition="'$(TargetFramework)'=='net9.0-desktop'">WinExe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+
+    <!-- Display name -->
+    <ApplicationTitle>STRIPES</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>aero.ivao.us.stripes</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!-- Package Publisher -->
+    <ApplicationPublisher>IVAO US</ApplicationPublisher>
+    <!-- Package Description -->
+    <Description>Synthetic Terminal Radar with Integrated Profiles for En-route Surveillance</Description>
+      
+    <UnoFeatures>
+      Lottie;
+      Hosting;
+      Toolkit;
+      Logging;
+      MVUX;
+      Configuration;
+      HttpKiota;
+      Serialization;
+      AuthenticationOidc;
+      SkiaRenderer;
+    </UnoFeatures>
+  </PropertyGroup>
+</Project>
