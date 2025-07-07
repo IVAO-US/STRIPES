@@ -1,5 +1,5 @@
 ﻿using IdentityModel.OidcClient.Browser;
-
+using Microsoft.Extensions.Configuration;
 using Uno.Resizetizer;
 
 using static Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions;
@@ -58,9 +58,10 @@ public partial class App : Application
 				}, enableUnoLogging: true)
 				.UseConfiguration(configure: configBuilder =>
 					configBuilder
-						.EmbeddedSource<App>(includeEnvironmentSettings: false)
+						.EmbeddedSource<App>()
 						.Section<AppConfig>()
 						.Section<Oidc>()
+						.ConfigureAppConfiguration(appConfig => appConfig.AddUserSecrets<App>())
 				)
 				// Register Json serializers (ISerializer and ISerializer)
 				.UseSerialization((context, services) => services.AddContentSerializer(context))
@@ -91,6 +92,7 @@ public partial class App : Application
 					// TODO: Register your services
 					services.AddTransient<IBrowser, OidcBrowser>();
 					services.AddSingleton<IvaoApiService>();
+					services.AddSingleton(new SettingsService(context.Configuration));
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);
