@@ -1,0 +1,17 @@
+﻿<Page x:Class="STRIPES.Pages.ScopePage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:STRIPES.Pages"
+	  NavigationCacheMode="Required"
+	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Horizontal"
+					Height="32"
+					VerticalAlignment="Stretch">
+			<Button Content="This will do something later"
+					HorizontalAlignment="Stretch" />
+		</StackPanel>
+
+		<local:ScopeCanvas />
+	</StackPanel>
+</Page>

@@ -1,4 +1,4 @@
-<Project ToolsVersion="15.0">
+﻿<Project ToolsVersion="15.0">
   <!--
     To update the version of Uno, you should instead update the Sdk version in the global.json file.
 
