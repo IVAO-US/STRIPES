@@ -4,14 +4,19 @@
 	  xmlns:local="using:STRIPES.Pages"
 	  NavigationCacheMode="Required"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-	<StackPanel Orientation="Vertical">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		
 		<StackPanel Orientation="Horizontal"
+					HorizontalAlignment="Center"
 					Height="32"
-					VerticalAlignment="Stretch">
-			<Button Content="This will do something later"
-					HorizontalAlignment="Stretch" />
+					Grid.Row="0">
+			<Button Content="This will do something later" />
 		</StackPanel>
 
-		<local:ScopeCanvas />
-	</StackPanel>
+		<local:ScopeCanvas Grid.Row="1" />
+	</Grid>
 </Page>
