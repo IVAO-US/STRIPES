@@ -1,6 +1,9 @@
 ﻿using CIFPReader;
+
 using Microsoft.Kiota.Abstractions.Serialization;
+
 using STRIPES.Services.Endpoints.Models;
+
 using System.Text.Json;
 
 namespace STRIPES.Pages;
@@ -15,14 +18,19 @@ internal partial class ScopePage : Page
 
 	private void SpawnButton_Click(object sender, RoutedEventArgs e)
 	{
-		NavigationView nav = new();
+		// Create and launch a window.
+		ScopeCanvas childScope = new();
+		ScopeData.Invalidated += () => {
+			try { childScope.Invalidate(); }
+			catch { }
+		};
+
 		Window window = new() {
-			Content = nav
+			Content = childScope
 		};
 
 		window.Closed += (_, _) => window.Content = null;
 		window.Activate();
-		_ = nav.Navigator()!.NavigateViewAsync<ScopePage>(nav);
 	}
 }
 
