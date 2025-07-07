@@ -13,8 +13,10 @@ public partial record MainModel(IAuthenticationService AuthenticationService)
 	public void Authenticate()
 	{
 		Window.Current!.DispatcherQueue.TryEnqueue(async () => {
-			if (!await AuthenticationService.LoginAsync())
-				return;
+			if (await AuthenticationService.IsAuthenticated())
+				await AuthenticationService.RefreshAsync();
+			else
+				await AuthenticationService.LoginAsync();
 		});
 	}
 }
