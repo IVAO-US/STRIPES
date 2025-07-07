@@ -1,0 +1,53 @@
+﻿using STRIPES.Services.Endpoints.Models;
+
+using System.Diagnostics.CodeAnalysis;
+
+namespace STRIPES.Services;
+
+public class IvaoApiService(IAuthenticationService _auth, IvaoApiClient _client)
+{
+	UserResponseDto? _me = null;
+
+	[MemberNotNullWhen(true, nameof(_me))]
+	public async ValueTask<bool> EnsureAuthenticatedAsync()
+	{
+		if (_me is not null)
+			return true;
+
+		if (await _auth.IsAuthenticated())
+			await _auth.RefreshAsync();
+		else
+			await _auth.LoginAsync();
+
+		if (await _client.V2.Users["me"].GetAsync() is not UserResponseDto user)
+			return false;
+
+		_me = user;
+		return true;
+	}
+
+	public async ValueTask<(bool Authorised, string Message)> FraCheckAsync(string position, double? vid = null)
+	{
+		if (!await EnsureAuthenticatedAsync())
+			throw new Exception("Authentication failed.");
+
+		vid ??= _me!.Id;
+
+		if (vid is null)
+			throw new ArgumentNullException(nameof(vid));
+
+		try
+		{
+			var fraRes = await _client.V2.Fras.Check[position][vid.Value].GetAsync();
+			return (true, fraRes?.Message ?? throw new Exception());
+		}
+		catch (ErrorFraCheckDTO ex)
+		{
+			return (false, ex.Message);
+		}
+		catch (SwaggerResponsesDto ex)
+		{
+			return (false, ex.Message);
+		}
+	}
+}

@@ -1,8 +1,8 @@
 ﻿using IdentityModel.OidcClient.Browser;
 
-using static Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions;
-
 using Uno.Resizetizer;
+
+using static Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions;
 
 namespace STRIPES.Pages;
 
@@ -35,6 +35,8 @@ public partial class App : Application
 				.Build();
 
 		Oidc oauthSettings = configApp.Services.GetRequiredService<IOptions<Oidc>>().Value;
+		await configApp.StopAsync();
+		configApp.Dispose();
 
 		var builder = this.CreateBuilder(args)
 			.UseToolkitNavigation()
@@ -88,6 +90,7 @@ public partial class App : Application
 				.ConfigureServices((context, services) => {
 					// TODO: Register your services
 					services.AddTransient<IBrowser, OidcBrowser>();
+					services.AddSingleton<IvaoApiService>();
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);
@@ -98,9 +101,12 @@ public partial class App : Application
 #endif
 		MainWindow.SetWindowIcon();
 
-		Host = builder.Build();
-
 		Host = await builder.NavigateAsync<Shell>();
+		MainWindow.Closed += async (_, _) => {
+			await Host.StopAsync();
+			Host.Dispose();
+			Environment.Exit(0);
+		};
 	}
 
 	private static void RegisterRoutes(IViewRegistry views, IRouteRegistry routes)

@@ -1,13 +1,22 @@
 ﻿<Page x:Class="STRIPES.Pages.MainPage"
 	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	  xmlns:local="using:STRIPES"
+	  xmlns:local="using:STRIPES.Pages"
 	  xmlns:uen="using:Uno.Extensions.Navigation.UI"
 	  xmlns:utu="using:Uno.Toolkit.UI"
+	  xmlns:mvux="using:Uno.Extensions.Reactive.UI"
 	  NavigationCacheMode="Required"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	  Loaded="Page_Loaded">
+	<Page.Resources>
+		<local:SuccessFailBrushConverter x:Key="ColourConverter" />
+	</Page.Resources>
+
 	<StackPanel>
-		<Button x:Name="BtnSignIn" Content="Sign In" Command="{Binding Authenticate}" />
+		<TextBox Text="{Binding SelectedPosition, Mode=TwoWay}" />
+		<Grid Background="{Binding PositionAuthorised, Converter={StaticResource ColourConverter}}">
+			<TextBlock Text="{Binding PositionAuthorisationMessage}" />
+		</Grid>
+		<Button Content="Refresh" Command="{Binding GetPositionAuthMessageAsync}" />
 	</StackPanel>
 </Page>
