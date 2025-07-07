@@ -10,13 +10,19 @@ internal partial class ScopePage : Page
 	public ScopePage()
 	{
 		InitializeComponent();
-		_ = Task.Run(async () => {
-			while (true)
-			{
-				await Task.Delay(TimeSpan.FromSeconds(0.25));
-				ScpBackground.Invalidate();
-			}
-		});
+		ScopeData.Invalidated += ScpBackground.Invalidate;
+	}
+
+	private void SpawnButton_Click(object sender, RoutedEventArgs e)
+	{
+		NavigationView nav = new();
+		Window window = new() {
+			Content = nav
+		};
+
+		window.Closed += (_, _) => window.Content = null;
+		window.Activate();
+		_ = nav.Navigator()!.NavigateViewAsync<ScopePage>(nav);
 	}
 }
 

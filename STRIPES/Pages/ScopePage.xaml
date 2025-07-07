@@ -9,13 +9,15 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		
+
 		<StackPanel Orientation="Horizontal"
 					HorizontalAlignment="Center"
 					Height="32"
 					Grid.Row="0">
-			<Button Content="This will do something later" 
+			<Button Content="Load Volumes" 
 					Command="{Binding LoadControlVolumesAsync}"/>
+			<Button Content="Spawn Window"
+					Click="SpawnButton_Click"/>
 		</StackPanel>
 
 		<local:ScopeCanvas Grid.Row="1" 

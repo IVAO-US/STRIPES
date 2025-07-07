@@ -11,6 +11,9 @@ public class ScopeCanvas : SKCanvasElement
 	{
 		canvas.Clear(SKColor.Empty);
 
+		if (ScopeData.ControlVolumes.Count == 0)
+			return;
+
 		decimal maxLat = ScopeData.ControlVolumes.Values.Max(static v => v.Max(static decimal (Coordinate c) => c.Latitude));
 		decimal minLat = ScopeData.ControlVolumes.Values.Min(static v => v.Min(static decimal (Coordinate c) => c.Latitude));
 		decimal maxLon = ScopeData.ControlVolumes.Values.Max(static v => v.Max(static decimal (Coordinate c) => c.Longitude));
