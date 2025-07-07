@@ -10,7 +10,7 @@ public sealed partial class MainPage : Page
 	private void Page_Loaded(object sender, RoutedEventArgs e) => XamlRootProvider.Initialize(XamlRoot!);
 }
 
-public partial record MainModel(IAuthenticationService AuthenticationService, IvaoApiService IvaoApi, INavigator Navigator)
+internal partial record MainModel(IAuthenticationService AuthenticationService, IvaoApiService IvaoApi, INavigator Navigator, IvanConnectionService Ivan)
 {
 	public IState<string> SelectedPosition => State<string>.Value(this, () => "");
 	public IState<string> PositionAuthorisationMessage => State<string>.Value(this, () => "No checks performed");
@@ -21,12 +21,15 @@ public partial record MainModel(IAuthenticationService AuthenticationService, Iv
 		if (await SelectedPosition is not string pos)
 			return;
 
-		(bool authed, string newVal) = await IvaoApi.FraCheckAsync(pos);
+		(bool authed, string authMessage) = await IvaoApi.FraCheckAsync(pos);
 		await PositionAuthorised.Update(c => authed, tkn);
-		await PositionAuthorisationMessage.Update(c => newVal, tkn);
+		await PositionAuthorisationMessage.Update(c => authMessage, tkn);
 
 		if (authed)
+		{
+			await Ivan.ConnectAsync(pos);
 			await Navigator.NavigateViewAsync<ScopePage>(this, cancellation: tkn);
+		}
 	}
 }
 

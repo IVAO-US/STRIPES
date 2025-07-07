@@ -26,6 +26,12 @@ public class IvaoApiService(IAuthenticationService _auth, IvaoApiClient _client)
 		return true;
 	}
 
+	/// <summary>
+	/// Checks if a user can connect to a position. 
+	/// </summary>
+	/// <param name="position">The callsign of the position.</param>
+	/// <param name="vid">The user attempting to connect. If <see langword="null"/>, the authenticated user.</param>
+	/// <returns>If the user is authorized and the message from the auth server.</returns>
 	public async ValueTask<(bool Authorised, string Message)> FraCheckAsync(string position, double? vid = null)
 	{
 		if (!await EnsureAuthenticatedAsync())
@@ -48,6 +54,27 @@ public class IvaoApiService(IAuthenticationService _auth, IvaoApiClient _client)
 		catch (SwaggerResponsesDto ex)
 		{
 			return (false, ex.Message);
+		}
+	}
+
+	/// <summary>
+	/// Gets the <see cref="ATCPositionDto"/> for the specified <paramref name="callsign"/>. 
+	/// </summary>
+	/// <param name="callsign">Ex. KORD_TWR</param>
+	/// <returns>The <see cref="ATCPositionDto"/> if it was found, otherwise <see langword="null"/>.</returns>
+	public async Task<ATCPositionDto?> GetAtcPositionAsync(string callsign)
+	{
+		if (!await EnsureAuthenticatedAsync())
+			throw new Exception("Authentication failed.");
+
+		try
+		{
+			var result = await _client.V2.ATCPositions[callsign].GetAsync();
+			return result;
+		}
+		catch (SwaggerResponsesDto)
+		{
+			return null;
 		}
 	}
 }

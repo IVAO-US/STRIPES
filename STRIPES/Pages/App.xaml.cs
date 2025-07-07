@@ -93,6 +93,7 @@ public partial class App : Application
 					services.AddTransient<IBrowser, OidcBrowser>();
 					services.AddSingleton<IvaoApiService>();
 					services.AddSingleton(new SettingsService(context.Configuration));
+					services.AddSingleton<IvanConnectionService>();
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);
