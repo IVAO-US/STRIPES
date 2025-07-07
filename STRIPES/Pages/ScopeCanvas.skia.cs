@@ -1,6 +1,9 @@
 ﻿using CIFPReader;
+
 using SkiaSharp;
+
 using Uno.WinUI.Graphics2DSK;
+
 using Windows.Foundation;
 
 namespace STRIPES.Pages;

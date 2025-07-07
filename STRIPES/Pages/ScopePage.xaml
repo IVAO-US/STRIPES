@@ -3,11 +3,13 @@
 	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	  xmlns:local="using:STRIPES.Pages"
 	  NavigationCacheMode="Required"
+	  GotFocus="Page_GotFocus"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<StackPanel Orientation="Horizontal"
@@ -20,7 +22,11 @@
 					Click="SpawnButton_Click"/>
 		</StackPanel>
 
-		<local:ScopeCanvas Grid.Row="1" 
-						   x:Name="ScpBackground"/>
+		<local:ScopeCanvas x:Name="ScpBackground" Grid.Row="1"
+						   GotFocus="Page_GotFocus"/>
+
+		<AutoSuggestBox x:Name="AsbOmnibar" Grid.Row="2"
+						PlaceholderText="Command…"
+						QueryIcon="Go"/>
 	</Grid>
 </Page>

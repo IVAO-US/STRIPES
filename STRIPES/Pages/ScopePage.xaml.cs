@@ -14,6 +14,7 @@ internal partial class ScopePage : Page
 	{
 		InitializeComponent();
 		ScopeData.Invalidated += ScpBackground.Invalidate;
+		AsbOmnibar.Focus(FocusState.Keyboard);
 	}
 
 	private void SpawnButton_Click(object sender, RoutedEventArgs e)
@@ -32,6 +33,8 @@ internal partial class ScopePage : Page
 		window.Closed += (_, _) => window.Content = null;
 		window.Activate();
 	}
+
+	private void Page_GotFocus(object sender, RoutedEventArgs e) => AsbOmnibar.Focus(FocusState.Keyboard);
 }
 
 internal partial record ScopeModel(IvaoApiService IvaoApi, IvanConnectionService Ivan)
