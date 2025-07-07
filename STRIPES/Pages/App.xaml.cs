@@ -1,0 +1,117 @@
+﻿using IdentityModel.OidcClient.Browser;
+
+using static Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions;
+
+using Uno.Resizetizer;
+
+namespace STRIPES.Pages;
+
+public partial class App : Application
+{
+	/// <summary>
+	/// Initializes the singleton application object. This is the first line of authored code
+	/// executed, and as such is the logical equivalent of main() or WinMain().
+	/// </summary>
+	public App() => InitializeComponent();
+
+	protected Window? MainWindow { get; private set; }
+	internal IHost? Host { get; private set; }
+
+	protected async override void OnLaunched(LaunchActivatedEventArgs args)
+	{
+		var configApp =
+			this.CreateBuilder(args)
+				.Configure(host => host
+#if DEBUG
+					// Pull the DEBUG appconfig
+					.UseEnvironment(Environments.Development)
+#endif
+					.UseConfiguration(configure: builder => builder
+						.EmbeddedSource<App>()
+						.Section<Oidc>()
+						.ConfigureAppConfiguration(appConfig => appConfig.AddUserSecrets<App>())
+					)
+				)
+				.Build();
+
+		Oidc oauthSettings = configApp.Services.GetRequiredService<IOptions<Oidc>>().Value;
+
+		var builder = this.CreateBuilder(args)
+			.UseToolkitNavigation()
+			.Configure(host => host
+#if DEBUG
+				// Switch to Development environment when running in DEBUG
+				.UseEnvironment(Environments.Development)
+#endif
+				.UseLogging(configure: (context, logBuilder) => {
+					// Configure log levels for different categories of logging
+					logBuilder
+						.SetMinimumLevel(
+							context.HostingEnvironment.IsDevelopment() ?
+								LogLevel.Information :
+								LogLevel.Warning)
+
+						// Default filters for core Uno Platform namespaces
+						.CoreLogLevel(LogLevel.Warning);
+				}, enableUnoLogging: true)
+				.UseConfiguration(configure: configBuilder =>
+					configBuilder
+						.EmbeddedSource<App>(includeEnvironmentSettings: false)
+						.Section<AppConfig>()
+						.Section<Oidc>()
+				)
+				// Register Json serializers (ISerializer and ISerializer)
+				.UseSerialization((context, services) => services.AddContentSerializer(context))
+				.UseThemeSwitching()
+				.UseHttp((context, services) => {
+					services.AddKiotaClient<IvaoApiClient>(
+						context,
+						options: new() { Url = "https://api.ivao.aero/" }
+					);
+				})
+				.UseAuthentication(auth =>
+					auth.AddOidc(oidc =>
+						oidc
+							.ConfigureOidcClientOptions(opts => {
+								opts.Policy.Discovery.Authority = "https://api.ivao.aero/";
+								opts.Policy.Discovery.DiscoveryDocumentPath = "/.well-known/openid-configuration";
+								opts.Policy.Discovery.AdditionalEndpointBaseAddresses.Add("https://sso.ivao.aero/authorize");
+								opts.Policy.Discovery.AdditionalEndpointBaseAddresses.Add("https://sso.ivao.aero/logout");
+							})
+							.Authority(oauthSettings.Authority!)
+							.RedirectUri(oauthSettings.RedirectUri!)
+							.ClientId(oauthSettings.ClientId!)
+							.ClientSecret(oauthSettings.ClientSecret!)
+							.Scope(oauthSettings.Scope!)
+					)
+				)
+				.ConfigureServices((context, services) => {
+					// TODO: Register your services
+					services.AddTransient<IBrowser, OidcBrowser>();
+				})
+				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
+			);
+		MainWindow = builder.Window;
+
+#if DEBUG
+		MainWindow.UseStudio();
+#endif
+		MainWindow.SetWindowIcon();
+
+		Host = builder.Build();
+
+		Host = await builder.NavigateAsync<Shell>();
+	}
+
+	private static void RegisterRoutes(IViewRegistry views, IRouteRegistry routes)
+	{
+		views.Register(
+			new ViewMap(ViewModel: typeof(ShellModel)),
+			new ViewMap<MainPage, MainModel>()
+		);
+
+		routes.Register(new RouteMap("", View: views.FindByViewModel<ShellModel>(), Nested: [
+			new("Main", View: views.FindByViewModel<MainModel>(), IsDefault: true)
+		]));
+	}
+}

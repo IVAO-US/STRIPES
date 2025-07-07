@@ -1,4 +1,4 @@
-using Uno.UI.Hosting;
+﻿using Uno.UI.Hosting;
 
 namespace STRIPES;
 internal class Program

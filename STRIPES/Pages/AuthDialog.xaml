@@ -1,0 +1,10 @@
+﻿<ContentDialog x:Class="STRIPES.Pages.AuthDialog"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:STRIPES"
+	  xmlns:utu="using:Uno.Toolkit.UI"
+	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid>
+		<WebView2 x:Name="WvwMain" />
+	</Grid>
+</ContentDialog>
