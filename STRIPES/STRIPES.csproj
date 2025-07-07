@@ -39,6 +39,9 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\CIFPReader\CIFPReader.csproj" />
+	</ItemGroup>
+	<ItemGroup>
 		<Page Update="Pages\AuthDialog.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>

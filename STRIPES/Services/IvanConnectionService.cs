@@ -1,8 +1,12 @@
-﻿namespace STRIPES.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace STRIPES.Services;
 
 internal sealed class IvanConnectionService
 {
 	public string? Callsign { get; private set; }
+
+	[MemberNotNullWhen(true, nameof(Callsign))]
 	public bool IsConnected => Callsign is not null;
 
 	/// <summary>

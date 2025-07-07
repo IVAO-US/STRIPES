@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -13,8 +13,7 @@
     <None Remove="CIFPReader.Tests\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.405.14" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="AWSSDK.S3" />
+	</ItemGroup>
 </Project>

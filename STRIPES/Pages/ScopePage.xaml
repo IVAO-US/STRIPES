@@ -14,9 +14,11 @@
 					HorizontalAlignment="Center"
 					Height="32"
 					Grid.Row="0">
-			<Button Content="This will do something later" />
+			<Button Content="This will do something later" 
+					Command="{Binding LoadControlVolumesAsync}"/>
 		</StackPanel>
 
-		<local:ScopeCanvas Grid.Row="1" />
+		<local:ScopeCanvas Grid.Row="1" 
+						   x:Name="ScpBackground"/>
 	</Grid>
 </Page>
