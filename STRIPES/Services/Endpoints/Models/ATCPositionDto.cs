@@ -14,6 +14,14 @@ namespace STRIPES.Services.Endpoints.Models
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        /// <summary>The airport property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public global::STRIPES.Services.Endpoints.Models.BaseAirportDto? Airport { get; set; }
+#nullable restore
+#else
+        public global::STRIPES.Services.Endpoints.Models.BaseAirportDto Airport { get; set; }
+#endif
         /// <summary>The airportId property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -38,6 +46,8 @@ namespace STRIPES.Services.Endpoints.Models
 #else
         public string ComposePosition { get; set; }
 #endif
+        /// <summary>The frequency property</summary>
+        public double? Frequency { get; set; }
         /// <summary>The id property</summary>
         public double? Id { get; set; }
         /// <summary>The middleIdentifier property</summary>
@@ -55,6 +65,14 @@ namespace STRIPES.Services.Endpoints.Models
 #nullable restore
 #else
         public string Position { get; set; }
+#endif
+        /// <summary>The regionMap property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>? RegionMap { get; set; }
+#nullable restore
+#else
+        public List<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto> RegionMap { get; set; }
 #endif
         /// <summary>
         /// Instantiates a new <see cref="global::STRIPES.Services.Endpoints.Models.ATCPositionDto"/> and sets the default values.
@@ -81,12 +99,15 @@ namespace STRIPES.Services.Endpoints.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "airport", n => { Airport = n.GetObjectValue<global::STRIPES.Services.Endpoints.Models.BaseAirportDto>(global::STRIPES.Services.Endpoints.Models.BaseAirportDto.CreateFromDiscriminatorValue); } },
                 { "airportId", n => { AirportId = n.GetStringValue(); } },
                 { "atcCallsign", n => { AtcCallsign = n.GetStringValue(); } },
                 { "composePosition", n => { ComposePosition = n.GetStringValue(); } },
+                { "frequency", n => { Frequency = n.GetDoubleValue(); } },
                 { "id", n => { Id = n.GetDoubleValue(); } },
                 { "middleIdentifier", n => { MiddleIdentifier = n.GetStringValue(); } },
                 { "position", n => { Position = n.GetStringValue(); } },
+                { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>(global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto.CreateFromDiscriminatorValue)?.AsList(); } },
             };
         }
         /// <summary>
@@ -96,12 +117,15 @@ namespace STRIPES.Services.Endpoints.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteObjectValue<global::STRIPES.Services.Endpoints.Models.BaseAirportDto>("airport", Airport);
             writer.WriteStringValue("airportId", AirportId);
             writer.WriteStringValue("atcCallsign", AtcCallsign);
             writer.WriteStringValue("composePosition", ComposePosition);
+            writer.WriteDoubleValue("frequency", Frequency);
             writer.WriteDoubleValue("id", Id);
             writer.WriteStringValue("middleIdentifier", MiddleIdentifier);
             writer.WriteStringValue("position", Position);
+            writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>("regionMap", RegionMap);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

@@ -89,10 +89,10 @@ namespace STRIPES.Services.Endpoints.Models
         /// <summary>The regionMapPolygon property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<UntypedNode>? RegionMapPolygon { get; set; }
+        public UntypedNode? RegionMapPolygon { get; set; }
 #nullable restore
 #else
-        public List<UntypedNode> RegionMapPolygon { get; set; }
+        public UntypedNode RegionMapPolygon { get; set; }
 #endif
         /// <summary>The startTime property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -155,7 +155,7 @@ namespace STRIPES.Services.Endpoints.Models
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "range", n => { Range = n.GetBoolValue(); } },
                 { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>(global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto.CreateFromDiscriminatorValue)?.AsList(); } },
-                { "regionMapPolygon", n => { RegionMapPolygon = n.GetCollectionOfPrimitiveValues<UntypedNode>()?.AsList(); } },
+                { "regionMapPolygon", n => { RegionMapPolygon = n.GetObjectValue<UntypedNode>(UntypedNode.CreateFromDiscriminatorValue); } },
                 { "startTime", n => { StartTime = n.GetStringValue(); } },
                 { "type", n => { Type = n.GetStringValue(); } },
                 { "updatedAt", n => { UpdatedAt = n.GetDateTimeOffsetValue(); } },
@@ -186,7 +186,7 @@ namespace STRIPES.Services.Endpoints.Models
             writer.WriteStringValue("name", Name);
             writer.WriteBoolValue("range", Range);
             writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>("regionMap", RegionMap);
-            writer.WriteCollectionOfPrimitiveValues<UntypedNode>("regionMapPolygon", RegionMapPolygon);
+            writer.WriteObjectValue<UntypedNode>("regionMapPolygon", RegionMapPolygon);
             writer.WriteStringValue("startTime", StartTime);
             writer.WriteStringValue("type", Type);
             writer.WriteDateTimeOffsetValue("updatedAt", UpdatedAt);

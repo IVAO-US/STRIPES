@@ -33,6 +33,7 @@ using STRIPES.Services.Endpoints.V2.SpecialAreas;
 using STRIPES.Services.Endpoints.V2.Squawks;
 using STRIPES.Services.Endpoints.V2.StaffPositions;
 using STRIPES.Services.Endpoints.V2.Subcenters;
+using STRIPES.Services.Endpoints.V2.Tracker;
 using STRIPES.Services.Endpoints.V2.UserStaffPositions;
 using STRIPES.Services.Endpoints.V2.Users;
 using STRIPES.Services.Endpoints.V2.VirtualAirlines;
@@ -202,6 +203,11 @@ namespace STRIPES.Services.Endpoints.V2
         public global::STRIPES.Services.Endpoints.V2.Subcenters.SubcentersRequestBuilder Subcenters
         {
             get => new global::STRIPES.Services.Endpoints.V2.Subcenters.SubcentersRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The tracker property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Tracker.TrackerRequestBuilder Tracker
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Tracker.TrackerRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The users property</summary>
         public global::STRIPES.Services.Endpoints.V2.Users.UsersRequestBuilder Users

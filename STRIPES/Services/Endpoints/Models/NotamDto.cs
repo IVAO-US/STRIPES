@@ -63,10 +63,10 @@ namespace STRIPES.Services.Endpoints.Models
         /// <summary>The regionMapPolygon property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<UntypedNode>? RegionMapPolygon { get; set; }
+        public UntypedNode? RegionMapPolygon { get; set; }
 #nullable restore
 #else
-        public List<UntypedNode> RegionMapPolygon { get; set; }
+        public UntypedNode RegionMapPolygon { get; set; }
 #endif
         /// <summary>The specialAreaId property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -111,7 +111,7 @@ namespace STRIPES.Services.Endpoints.Models
                 { "military", n => { Military = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
                 { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>(global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto.CreateFromDiscriminatorValue)?.AsList(); } },
-                { "regionMapPolygon", n => { RegionMapPolygon = n.GetCollectionOfPrimitiveValues<UntypedNode>()?.AsList(); } },
+                { "regionMapPolygon", n => { RegionMapPolygon = n.GetObjectValue<UntypedNode>(UntypedNode.CreateFromDiscriminatorValue); } },
                 { "specialAreaId", n => { SpecialAreaId = n.GetStringValue(); } },
                 { "startTime", n => { StartTime = n.GetDoubleValue(); } },
             };
@@ -131,7 +131,7 @@ namespace STRIPES.Services.Endpoints.Models
             writer.WriteBoolValue("military", Military);
             writer.WriteStringValue("name", Name);
             writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>("regionMap", RegionMap);
-            writer.WriteCollectionOfPrimitiveValues<UntypedNode>("regionMapPolygon", RegionMapPolygon);
+            writer.WriteObjectValue<UntypedNode>("regionMapPolygon", RegionMapPolygon);
             writer.WriteStringValue("specialAreaId", SpecialAreaId);
             writer.WriteDoubleValue("startTime", StartTime);
             writer.WriteAdditionalData(AdditionalData);

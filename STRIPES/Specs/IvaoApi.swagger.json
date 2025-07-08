@@ -1,4 +1,4 @@
-{
+﻿{
 	"openapi": "3.0.0",
 	"paths": {
 		"/v2/aircrafts/manufacturers": {
@@ -2944,7 +2944,7 @@
 					{
 						"name": "icao",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Airport/Center ICAO code",
 						"schema": {
 							"type": "string"
@@ -2971,7 +2971,7 @@
 					{
 						"name": "limit",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Max results of each type (default: 10, max: 100)",
 						"schema": {
 							"type": "number"
@@ -2980,7 +2980,7 @@
 					{
 						"name": "composePositionList",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Return the list of composePositions",
 						"schema": {
 							"type": "boolean"
@@ -5885,8 +5885,8 @@
 					},
 					{
 						"name": "icao",
-						"required": true,
-						"in": "path",
+						"required": false,
+						"in": "query",
 						"description": "Airline ICAO code",
 						"schema": {
 							"type": "string"
@@ -6413,7 +6413,7 @@
 				]
 			}
 		},
-	
+
 		"/v2/departments": {
 			"get": {
 				"operationId": "DepartmentsController_list",
@@ -10035,7 +10035,7 @@
 				"parameters": [
 					{
 						"name": "type",
-						"required": false,
+						"required": true,
 						"in": "path",
 						"description": "Application id",
 						"schema": {
@@ -10622,7 +10622,7 @@
 				]
 			}
 		},
-	
+
 		"/v2/users/me/aircrafts": {
 			"get": {
 				"operationId": "AircraftsController_list",
@@ -10649,7 +10649,7 @@
 					{
 						"name": "aircraftId",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Type of aircraft (A321, CRJ9, B787)",
 						"schema": {
 							"type": "string"
@@ -10658,7 +10658,7 @@
 					{
 						"name": "registration",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Aircraft's registration",
 						"schema": {
 							"type": "string"
@@ -10667,7 +10667,7 @@
 					{
 						"name": "selcal",
 						"required": false,
-						"in": "path",
+						"in": "query",
 						"description": "Aircraft's selcal",
 						"schema": {
 							"type": "string"
@@ -11681,6 +11681,2189 @@
 					"flightPlans"
 				]
 			}
+		},
+		"/v2/airports/stats": {
+			"get": {
+				"operationId": "AirportsController_stats",
+				"parameters": [
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max number of airports to be returned",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of airports stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AirportStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/traffics": {
+			"get": {
+				"operationId": "AirportsController_traffics",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Date from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Date to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return the list of outbound and inbound traffics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AirportTrafficsDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/traffics/count": {
+			"get": {
+				"operationId": "AirportsController_count",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Date from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Date to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return the list of outbound and inbound traffics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AirportTrafficsCountDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/stats": {
+			"get": {
+				"operationId": "AirportsController_airportStats",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return a list of stats on the dates range",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AirportStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/stats/latest": {
+			"get": {
+				"operationId": "AirportsController_airportStatsLatest",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return the last airport stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AirportStatDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/atis": {
+			"get": {
+				"operationId": "AirportsController_airportAtis",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AtisDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/atis/latest": {
+			"get": {
+				"operationId": "AirportsController_airportAtisLatest",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/airports/{icao}/atis/{revision}": {
+			"get": {
+				"operationId": "AirportsController_airportAtisShow",
+				"parameters": [
+					{
+						"name": "icao",
+						"required": true,
+						"in": "path",
+						"description": "Airport icao code",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "revision",
+						"required": true,
+						"in": "path",
+						"description": "The Atis revision letter",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"airports"
+				]
+			}
+		},
+		"/v2/ATCPositions/{id}/atis": {
+			"get": {
+				"operationId": "AtcPositionsController_list",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "ATCPosition ID",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AtisDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"ATCPositions"
+				]
+			}
+		},
+		"/v2/ATCPositions/{id}/atis/latest": {
+			"get": {
+				"operationId": "AtcPositionsController_latest",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "ATCPosition ID",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"ATCPositions"
+				]
+			}
+		},
+		"/v2/ATCPositions/{id}/atis/{revision}": {
+			"get": {
+				"operationId": "AtcPositionsController_show",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "ATCPosition ID",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "revision",
+						"required": true,
+						"in": "path",
+						"description": "The Atis revision letter",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"ATCPositions"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/atis": {
+			"get": {
+				"operationId": "AtisController_list",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AtisDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions",
+					"atis"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/atis/latest": {
+			"get": {
+				"operationId": "AtisController_latest",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return latest atis revisions of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions",
+					"atis"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/atis/{revision}": {
+			"get": {
+				"operationId": "AtisController_show",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "revision",
+						"required": true,
+						"in": "path",
+						"description": "The Atis revision letter",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return a revision of the atis of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AtisDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions",
+					"atis"
+				]
+			}
+		},
+		"/v2/tracker/flightPlans/{id}": {
+			"get": {
+				"operationId": "FlightPlansController_latest",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "FlightPlan Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return the session plan that match with the given ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FlightPlanDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"flightPlans"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/flightPlans": {
+			"get": {
+				"operationId": "SessionFlightPlansController_list",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return all the session plans of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/BaseFlightPlanDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions",
+					"flightPlans"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/flightPlans/latest": {
+			"get": {
+				"operationId": "SessionFlightPlansController_latest",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return latest session plan of this session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FlightPlanDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions",
+					"flightPlans"
+				]
+			}
+		},
+		"/v2/tracker/now/connections/stats": {
+			"get": {
+				"operationId": "NowController_connectionStats",
+				"parameters": [
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Date from which to calculate the maximum",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Date until which to calculate the maximum",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns the statistics of now and the maximum of the range given previously",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowConnectionStatsDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/pilots": {
+			"get": {
+				"operationId": "NowController_pilots",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns the list of sessions who are flying at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowPilotDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/pilots/summary": {
+			"get": {
+				"operationId": "NowController_pilotsSummary",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns a summary of sessions who are flying at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/NowPilotSummaryDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/atc": {
+			"get": {
+				"operationId": "NowController_atcs",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns the list of atc who are controlling at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowAtcDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/atc/summary": {
+			"get": {
+				"operationId": "NowController_atcsSummary",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns a summary of atcs who are controlling at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowAtcSummaryDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/supervisors": {
+			"get": {
+				"operationId": "NowController_supervisors",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns the list of supervisors who are connected at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowSupervisorsDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/now/observers": {
+			"get": {
+				"operationId": "NowController_observers",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Returns the list of observer who are connected at the moment",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NowAtcDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"now"
+				]
+			}
+		},
+		"/v2/tracker/sessions": {
+			"get": {
+				"operationId": "SessionsController_list",
+				"parameters": [
+					{
+						"name": "page",
+						"required": false,
+						"in": "query",
+						"description": "The number of the page",
+						"schema": {
+							"default": 1,
+							"type": "number"
+						}
+					},
+					{
+						"name": "perPage",
+						"required": false,
+						"in": "query",
+						"description": "The number of elements per page",
+						"schema": {
+							"maximum": 100
+						}
+					},
+					{
+						"name": "arrivalId",
+						"required": false,
+						"in": "query",
+						"description": "Arrival airport Id",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "departureId",
+						"required": false,
+						"in": "query",
+						"description": "Departure airport Id",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Date from which to calculate the maximum",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Date until which to calculate the maximum",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "userId",
+						"required": false,
+						"in": "query",
+						"description": "The user whom the sessions",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "connectionType",
+						"required": false,
+						"in": "query",
+						"description": "The type of connection of the session",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "callsign",
+						"required": false,
+						"in": "query",
+						"description": "The callsign that was used to connect",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns the sessions that match the filters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedSessionDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{id}": {
+			"get": {
+				"operationId": "SessionsController_show",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns the session that match the ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SessionDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"sessions"
+				]
+			}
+		},
+		"/v2/tracker/connections/{type}": {
+			"get": {
+				"operationId": "StatsController_connections",
+				"parameters": [
+					{
+						"name": "type",
+						"required": true,
+						"in": "path",
+						"description": "Connection type to fetch",
+						"schema": {
+							"enum": [
+								"atc",
+								"followMe",
+								"observer",
+								"pilot",
+								"supervisor",
+								"total",
+								"worldTour",
+								"uniqueUsers24h"
+							],
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Date from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Date to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of connections stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/servers/stats": {
+			"get": {
+				"operationId": "StatsController_servers",
+				"parameters": [
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of servers stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/ServerStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/servers/{id}/stats": {
+			"get": {
+				"operationId": "StatsController_server",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "Server Id",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of servers stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/ServerStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/simulators/stats": {
+			"get": {
+				"operationId": "StatsController_simulators",
+				"parameters": [
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of simulators stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/SimulatorStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/simulators/{id}/stats": {
+			"get": {
+				"operationId": "StatsController_simulator",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "Simulator Id",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of simulators stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/SimulatorStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/softwares/stats": {
+			"get": {
+				"operationId": "StatsController_softwares",
+				"parameters": [
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of softwares stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/SoftwareStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/softwares/{type}/stats": {
+			"get": {
+				"operationId": "StatsController_software",
+				"parameters": [
+					{
+						"name": "type",
+						"required": true,
+						"in": "path",
+						"description": "Software Type",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "limit",
+						"required": false,
+						"in": "query",
+						"description": "Max Number of stats to be returned",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "from",
+						"required": false,
+						"in": "query",
+						"description": "Day from which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"name": "to",
+						"required": false,
+						"in": "query",
+						"description": "Day to which to show statistics",
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Return list of softwares stats",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/SoftwareStatDto"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					}
+				],
+				"tags": [
+					"stats"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/tracks": {
+			"get": {
+				"operationId": "TracksController_list",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns all the tracks from a session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PilotTrackDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"sessions",
+					"sessionTracks"
+				]
+			}
+		},
+		"/v2/tracker/sessions/{sessionId}/tracks/latest": {
+			"get": {
+				"operationId": "TracksController_latest",
+				"parameters": [
+					{
+						"name": "sessionId",
+						"required": true,
+						"in": "path",
+						"description": "Session Id",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns latest tracks from a session",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PilotTrackDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"sessions",
+					"sessionTracks"
+				]
+			}
+		},
+		"/v2/users/{vid}/sessions/now": {
+			"get": {
+				"operationId": "UsersController_show",
+				"parameters": [
+					{
+						"name": "vid",
+						"required": true,
+						"in": "path",
+						"description": "User's VID (use 'me' for current logged in user)",
+						"schema": {
+							"default": "me",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns the session that match the VID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SessionDto"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SwaggerResponsesDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"oauth2": []
+					},
+					{
+						"consumer": []
+					},
+					{
+						"oauth2": []
+					},
+					{
+						"oauth2": [
+							"tracker"
+						]
+					}
+				],
+				"tags": [
+					"user",
+					"sessions"
+				]
+			}
+		},
+		"/v2/tracker/whazzup": {
+			"get": {
+				"operationId": "WhazzupController_list",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Return network status",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WhazzupDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"whazzup"
+				]
+			}
+		},
+		"/v2/tracker/whazzup/atis": {
+			"get": {
+				"operationId": "WhazzupController_atis",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Return active atis",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AtisDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"whazzup"
+				]
+			}
 		}
 	},
 	"info": {
@@ -12397,14 +14580,17 @@
 					"regionMap": {
 						"type": "array",
 						"items": {
-							"type": "object"
+							"$ref": "#/components/schemas/BaseRegionMapDto"
 						}
 					},
 					"regionMapPolygon": {
+						"type": "array",
 						"items": {
-							"type": "array"
-						},
-						"type": "array"
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
 					}
 				},
 				"required": [
@@ -12821,10 +15007,13 @@
 						}
 					},
 					"regionMapPolygon": {
+						"type": "array",
 						"items": {
-							"type": "array"
-						},
-						"type": "array"
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
 					}
 				},
 				"required": [
@@ -13485,10 +15674,13 @@
 						}
 					},
 					"regionMapPolygon": {
+						"type": "array",
 						"items": {
-							"type": "array"
-						},
-						"type": "array"
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
 					},
 					"createdAt": {
 						"format": "date-time",
@@ -13632,10 +15824,13 @@
 						}
 					},
 					"regionMapPolygon": {
+						"type": "array",
 						"items": {
-							"type": "array"
-						},
-						"type": "array"
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
 					},
 					"latitude": {
 						"type": "number"
@@ -14223,6 +16418,18 @@
 					},
 					"position": {
 						"type": "string"
+					},
+					"airport": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"frequency": {
+						"type": "number"
+					},
+					"regionMap": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/BaseRegionMapDto"
+						}
 					}
 				},
 				"required": [
@@ -14231,7 +16438,10 @@
 					"atcCallsign",
 					"composePosition",
 					"middleIdentifier",
-					"position"
+					"position",
+					"frequency",
+					"airport",
+					"regionMap"
 				]
 			},
 			"SubcenterDto": {
@@ -15673,7 +17883,1304 @@
 					"level",
 					"updatedAt"
 				]
+			},
+			"AirportStatDto": {
+				"type": "object",
+				"properties": {
+					"icao": {
+						"type": "string"
+					},
+					"in": {
+						"type": "number"
+					},
+					"out": {
+						"type": "number"
+					},
+					"total": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"icao",
+					"in",
+					"out",
+					"total",
+					"timestamp"
+				]
+			},
+			"PilotSessionDto": {
+				"type": "object",
+				"properties": {
+					"simulatorId": {
+						"type": "string"
+					},
+					"textureId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"simulatorId",
+					"textureId"
+				]
+			},
+			"AircraftSummaryDto": {
+				"type": "object",
+				"properties": {
+					"icaoCode": {
+						"type": "string"
+					},
+					"model": {
+						"type": "string"
+					},
+					"wakeTurbulence": {
+						"type": "string"
+					},
+					"isMilitary": {
+						"type": "boolean"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"icaoCode",
+					"model",
+					"wakeTurbulence",
+					"isMilitary",
+					"description"
+				]
+			},
+			"FlightPlanSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"arrivalId": {
+						"type": "string"
+					},
+					"departureId": {
+						"type": "string"
+					},
+					"aircraftId": {
+						"type": "string"
+					},
+					"aircraft": {
+						"$ref": "#/components/schemas/AircraftSummaryDto"
+					},
+					"departure": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"arrival": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"alternative": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"alternative2": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					}
+				},
+				"required": [
+					"id",
+					"arrivalId",
+					"departureId",
+					"aircraftId"
+				]
+			},
+			"PilotTrackDto": {
+				"type": "object",
+				"properties": {
+					"time": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"latitude": {
+						"type": "number"
+					},
+					"longitude": {
+						"type": "number"
+					},
+					"altitude": {
+						"type": "number"
+					},
+					"altitudeDifference": {
+						"type": "number"
+					},
+					"arrivalDistance": {
+						"type": "number"
+					},
+					"bank": {
+						"type": "number"
+					},
+					"departureDistance": {
+						"type": "number"
+					},
+					"groundSpeed": {
+						"type": "number"
+					},
+					"heading": {
+						"type": "number"
+					},
+					"onGround": {
+						"type": "boolean"
+					},
+					"pitch": {
+						"type": "number"
+					},
+					"sandbagging": {
+						"type": "boolean"
+					},
+					"state": {
+						"type": "string"
+					},
+					"transponder": {
+						"type": "number"
+					},
+					"transponderMode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"time",
+					"timestamp",
+					"latitude",
+					"longitude",
+					"altitude",
+					"altitudeDifference",
+					"arrivalDistance",
+					"bank",
+					"departureDistance",
+					"groundSpeed",
+					"heading",
+					"onGround",
+					"pitch",
+					"sandbagging",
+					"state",
+					"transponder",
+					"transponderMode"
+				]
+			},
+			"AirportTrafficDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"pilotSession": {
+						"$ref": "#/components/schemas/PilotSessionDto"
+					},
+					"flightPlan": {
+						"$ref": "#/components/schemas/FlightPlanSummaryDto"
+					},
+					"lastTrack": {
+						"$ref": "#/components/schemas/PilotTrackDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"createdAt",
+					"time",
+					"pilotSession",
+					"flightPlan",
+					"lastTrack"
+				]
+			},
+			"AirportTrafficsDto": {
+				"type": "object",
+				"properties": {
+					"inbound": {
+						"$ref": "#/components/schemas/AirportTrafficDto"
+					},
+					"outbound": {
+						"$ref": "#/components/schemas/AirportTrafficDto"
+					},
+					"flightover": {
+						"$ref": "#/components/schemas/AirportTrafficDto"
+					}
+				},
+				"required": [
+					"inbound",
+					"outbound",
+					"flightover"
+				]
+			},
+			"AirportTrafficsCountDto": {
+				"type": "object",
+				"properties": {
+					"inbound": {
+						"type": "number"
+					},
+					"outbound": {
+						"type": "number"
+					},
+					"flightover": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"inbound",
+					"outbound",
+					"flightover"
+				]
+			},
+			"AtisDto": {
+				"type": "object",
+				"properties": {
+					"lines": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"revision": {
+						"type": "string"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"lines",
+					"revision",
+					"timestamp"
+				]
+			},
+			"FlightPlanDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"sessionId": {
+						"type": "number"
+					},
+					"revision": {
+						"type": "number"
+					},
+					"aircraftId": {
+						"type": "string"
+					},
+					"aircraftNumber": {
+						"type": "number"
+					},
+					"departureId": {
+						"type": "string"
+					},
+					"arrivalId": {
+						"type": "string"
+					},
+					"alternativeId": {
+						"type": "string"
+					},
+					"alternative2Id": {
+						"type": "string"
+					},
+					"route": {
+						"type": "string"
+					},
+					"remarks": {
+						"type": "string"
+					},
+					"speed": {
+						"type": "string"
+					},
+					"level": {
+						"type": "string"
+					},
+					"flightRules": {
+						"type": "string"
+					},
+					"flightType": {
+						"type": "string"
+					},
+					"eet": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"endurance": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"departureTime": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"actualDepartureTime": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"peopleOnBoard": {
+						"type": "number"
+					},
+					"aircraftEquipments": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"aircraftTransponderTypes": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"departure": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"arrival": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"alternative": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"alternative2": {
+						"$ref": "#/components/schemas/BaseAirportDto"
+					},
+					"aircraft": {
+						"$ref": "#/components/schemas/AircraftSummaryDto"
+					}
+				},
+				"required": [
+					"id",
+					"sessionId",
+					"revision",
+					"aircraftId",
+					"aircraftNumber",
+					"route",
+					"remarks",
+					"speed",
+					"level",
+					"flightRules",
+					"flightType",
+					"eet",
+					"endurance",
+					"departureTime",
+					"actualDepartureTime",
+					"peopleOnBoard",
+					"aircraftEquipments",
+					"aircraftTransponderTypes"
+				]
+			},
+			"BaseFlightPlanDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"sessionId": {
+						"type": "number"
+					},
+					"revision": {
+						"type": "number"
+					},
+					"aircraftId": {
+						"type": "string"
+					},
+					"aircraftNumber": {
+						"type": "number"
+					},
+					"departureId": {
+						"type": "string"
+					},
+					"arrivalId": {
+						"type": "string"
+					},
+					"alternativeId": {
+						"type": "string"
+					},
+					"alternative2Id": {
+						"type": "string"
+					},
+					"route": {
+						"type": "string"
+					},
+					"remarks": {
+						"type": "string"
+					},
+					"speed": {
+						"type": "string"
+					},
+					"level": {
+						"type": "string"
+					},
+					"flightRules": {
+						"type": "string"
+					},
+					"flightType": {
+						"type": "string"
+					},
+					"eet": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"endurance": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"departureTime": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"actualDepartureTime": {
+						"type": "number",
+						"description": "Time in seconds"
+					},
+					"peopleOnBoard": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"id",
+					"sessionId",
+					"revision",
+					"aircraftId",
+					"aircraftNumber",
+					"route",
+					"remarks",
+					"speed",
+					"level",
+					"flightRules",
+					"flightType",
+					"eet",
+					"endurance",
+					"departureTime",
+					"actualDepartureTime",
+					"peopleOnBoard"
+				]
+			},
+			"NowSubConnectionStatsDto": {
+				"type": "object",
+				"properties": {
+					"atc": {
+						"type": "number"
+					},
+					"followMes": {
+						"type": "number"
+					},
+					"observers": {
+						"type": "number"
+					},
+					"pilots": {
+						"type": "number"
+					},
+					"supervisors": {
+						"type": "number"
+					},
+					"total": {
+						"type": "number"
+					},
+					"worldTours": {
+						"type": "number"
+					},
+					"uniqueUsers24h": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"atc",
+					"followMes",
+					"observers",
+					"pilots",
+					"supervisors",
+					"total",
+					"worldTours",
+					"uniqueUsers24h"
+				]
+			},
+			"NowConnectionStatsDto": {
+				"type": "object",
+				"properties": {
+					"now": {
+						"$ref": "#/components/schemas/NowSubConnectionStatsDto"
+					},
+					"max": {
+						"$ref": "#/components/schemas/NowSubConnectionStatsDto"
+					}
+				},
+				"required": [
+					"now",
+					"max"
+				]
+			},
+			"SoftwareSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				]
+			},
+			"UserPilotRatingDto": {
+				"type": "object",
+				"properties": {
+					"pilotRating": {
+						"$ref": "#/components/schemas/BaseRatingDto"
+					},
+					"pilotRatingId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"pilotRatingId"
+				]
+			},
+			"PilotSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"divisionId": {
+						"type": "string"
+					},
+					"rating": {
+						"$ref": "#/components/schemas/UserPilotRatingDto"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"divisionId",
+					"rating"
+				]
+			},
+			"LastTrackDto": {
+				"type": "object",
+				"properties": {
+					"time": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"latitude": {
+						"type": "number"
+					},
+					"longitude": {
+						"type": "number"
+					},
+					"altitude": {
+						"type": "number"
+					},
+					"altitudeDifference": {
+						"type": "number"
+					},
+					"arrivalDistance": {
+						"type": "number"
+					},
+					"departureDistance": {
+						"type": "number"
+					},
+					"groundSpeed": {
+						"type": "number"
+					},
+					"heading": {
+						"type": "number"
+					},
+					"onGround": {
+						"type": "boolean"
+					},
+					"state": {
+						"type": "string"
+					},
+					"transponder": {
+						"type": "number"
+					},
+					"transponderMode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"time",
+					"timestamp",
+					"latitude",
+					"longitude",
+					"altitude",
+					"altitudeDifference",
+					"arrivalDistance",
+					"departureDistance",
+					"groundSpeed",
+					"heading",
+					"onGround",
+					"state",
+					"transponder",
+					"transponderMode"
+				]
+			},
+			"NowPilotDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"pilotSession": {
+						"$ref": "#/components/schemas/PilotSessionDto"
+					},
+					"flightPlan": {
+						"$ref": "#/components/schemas/FlightPlanSummaryDto"
+					},
+					"softwareType": {
+						"$ref": "#/components/schemas/SoftwareSummaryDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/PilotSummaryDto"
+					},
+					"lastTrack": {
+						"$ref": "#/components/schemas/LastTrackDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"createdAt",
+					"time",
+					"pilotSession",
+					"flightPlan",
+					"softwareType",
+					"user",
+					"lastTrack"
+				]
+			},
+			"NowPilotSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"isMilitary": {
+						"type": "boolean"
+					},
+					"isWorldTour": {
+						"type": "boolean"
+					},
+					"flightPlan": {
+						"$ref": "#/components/schemas/FlightPlanSummaryDto"
+					},
+					"lastTrack": {
+						"$ref": "#/components/schemas/LastTrackDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"isMilitary",
+					"isWorldTour",
+					"flightPlan",
+					"lastTrack"
+				]
+			},
+			"AtcSessionDto": {
+				"type": "object",
+				"properties": {
+					"position": {
+						"type": "string"
+					},
+					"frequency": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"position",
+					"frequency"
+				]
+			},
+			"UserATCRatingDto": {
+				"type": "object",
+				"properties": {
+					"atcRating": {
+						"$ref": "#/components/schemas/BaseRatingDto"
+					},
+					"atcRatingId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"atcRatingId"
+				]
+			},
+			"ATCSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"divisionId": {
+						"type": "string"
+					},
+					"rating": {
+						"$ref": "#/components/schemas/UserATCRatingDto"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"divisionId",
+					"rating"
+				]
+			},
+			"NowAtcDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"atcSession": {
+						"$ref": "#/components/schemas/AtcSessionDto"
+					},
+					"softwareType": {
+						"$ref": "#/components/schemas/SoftwareSummaryDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/ATCSummaryDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"createdAt",
+					"time",
+					"atcSession",
+					"softwareType",
+					"user"
+				]
+			},
+			"NowAtcSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"atcSession": {
+						"$ref": "#/components/schemas/AtcSessionDto"
+					},
+					"atcPosition": {
+						"$ref": "#/components/schemas/ATCPositionDto"
+					},
+					"subcenter": {
+						"$ref": "#/components/schemas/SubcenterDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"atcSession"
+				]
+			},
+			"UserSummaryBaseDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"divisionId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"divisionId"
+				]
+			},
+			"NowSupervisorsDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"hideSupervisor": {
+						"type": "boolean"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserSummaryBaseDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"createdAt",
+					"time",
+					"hideSupervisor",
+					"user"
+				]
+			},
+			"UserSummaryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"divisionId": {
+						"type": "string"
+					},
+					"rating": {
+						"$ref": "#/components/schemas/UserRatingDto"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"divisionId",
+					"rating"
+				]
+			},
+			"BaseSessionDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"softwareTypeId": {
+						"type": "string"
+					},
+					"softwareVersion": {
+						"type": "string"
+					},
+					"sandbagging": {
+						"type": "boolean"
+					},
+					"isMilitary": {
+						"type": "boolean"
+					},
+					"isWorldTour": {
+						"type": "boolean"
+					},
+					"flightPlans": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"softwareType": {
+						"$ref": "#/components/schemas/SoftwareSummaryDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserSummaryDto"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"completedAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"updatedAt": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"time",
+					"softwareTypeId",
+					"softwareVersion",
+					"createdAt"
+				]
+			},
+			"PaginatedSessionDto": {
+				"type": "object",
+				"properties": {
+					"totalItems": {
+						"type": "number"
+					},
+					"perPage": {
+						"type": "number"
+					},
+					"page": {
+						"type": "number"
+					},
+					"pages": {
+						"type": "number"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/BaseSessionDto"
+						}
+					}
+				},
+				"required": [
+					"totalItems",
+					"perPage",
+					"page",
+					"pages",
+					"items"
+				]
+			},
+			"SessionDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"callsign": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number"
+					},
+					"connectionType": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"time": {
+						"type": "number"
+					},
+					"softwareTypeId": {
+						"type": "string"
+					},
+					"softwareVersion": {
+						"type": "string"
+					},
+					"sandbagging": {
+						"type": "boolean"
+					},
+					"isMilitary": {
+						"type": "boolean"
+					},
+					"isWorldTour": {
+						"type": "boolean"
+					},
+					"flightPlans": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"softwareType": {
+						"$ref": "#/components/schemas/SoftwareSummaryDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserSummaryDto"
+					},
+					"createdAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"completedAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"updatedAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"isDoubleConnected": {
+						"type": "boolean"
+					},
+					"hideSupervisor": {
+						"type": "boolean"
+					},
+					"pilotSession": {
+						"$ref": "#/components/schemas/PilotSessionDto"
+					},
+					"atcSession": {
+						"$ref": "#/components/schemas/AtcSessionDto"
+					}
+				},
+				"required": [
+					"id",
+					"callsign",
+					"userId",
+					"connectionType",
+					"serverId",
+					"time",
+					"softwareTypeId",
+					"softwareVersion",
+					"createdAt",
+					"isDoubleConnected",
+					"hideSupervisor"
+				]
+			},
+			"ServerStatDto": {
+				"type": "object",
+				"properties": {
+					"server": {
+						"type": "string"
+					},
+					"totalConnections": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"server",
+					"totalConnections",
+					"timestamp"
+				]
+			},
+			"SimulatorStatDto": {
+				"type": "object",
+				"properties": {
+					"simulator": {
+						"type": "string"
+					},
+					"totalConnections": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"simulator",
+					"totalConnections",
+					"timestamp"
+				]
+			},
+			"SoftwareStatDto": {
+				"type": "object",
+				"properties": {
+					"software": {
+						"type": "string"
+					},
+					"totalConnections": {
+						"type": "number"
+					},
+					"timestamp": {
+						"format": "date-time",
+						"type": "string"
+					}
+				},
+				"required": [
+					"software",
+					"totalConnections",
+					"timestamp"
+				]
+			},
+			"ClientsDto": {
+				"type": "object",
+				"properties": {
+					"pilots": {
+						"$ref": "#/components/schemas/BaseSessionDto"
+					},
+					"atcs": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/BaseSessionDto"
+						}
+					},
+					"observers": {
+						"$ref": "#/components/schemas/BaseSessionDto"
+					},
+					"followMe": {
+						"$ref": "#/components/schemas/BaseSessionDto"
+					}
+				},
+				"required": [
+					"pilots",
+					"atcs",
+					"observers",
+					"followMe"
+				]
+			},
+			"WhazzupDto": {
+				"type": "object",
+				"properties": {
+					"updatedAt": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"clients": {
+						"$ref": "#/components/schemas/ClientsDto"
+					},
+					"servers": {
+						"$ref": "#/components/schemas/ServerDto"
+					},
+					"voiceServers": {
+						"$ref": "#/components/schemas/ServerDto"
+					}
+				},
+				"required": [
+					"updatedAt",
+					"clients",
+					"servers",
+					"voiceServers"
+				]
 			}
+
 		}
 	}
 }

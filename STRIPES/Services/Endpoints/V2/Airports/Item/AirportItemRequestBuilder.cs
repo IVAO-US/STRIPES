@@ -5,12 +5,15 @@ using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
 using STRIPES.Services.Endpoints.V2.Airports.Item.ATCPositions;
+using STRIPES.Services.Endpoints.V2.Airports.Item.Atis;
 using STRIPES.Services.Endpoints.V2.Airports.Item.Metar;
 using STRIPES.Services.Endpoints.V2.Airports.Item.Notams;
 using STRIPES.Services.Endpoints.V2.Airports.Item.Runways;
 using STRIPES.Services.Endpoints.V2.Airports.Item.ShortTaf;
 using STRIPES.Services.Endpoints.V2.Airports.Item.Squawks;
+using STRIPES.Services.Endpoints.V2.Airports.Item.Stats;
 using STRIPES.Services.Endpoints.V2.Airports.Item.Taf;
+using STRIPES.Services.Endpoints.V2.Airports.Item.Traffics;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -28,6 +31,11 @@ namespace STRIPES.Services.Endpoints.V2.Airports.Item
         public global::STRIPES.Services.Endpoints.V2.Airports.Item.ATCPositions.ATCPositionsRequestBuilder ATCPositions
         {
             get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.ATCPositions.ATCPositionsRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The atis property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Airports.Item.Atis.AtisRequestBuilder Atis
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.Atis.AtisRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The metar property</summary>
         public global::STRIPES.Services.Endpoints.V2.Airports.Item.Metar.MetarRequestBuilder Metar
@@ -54,10 +62,20 @@ namespace STRIPES.Services.Endpoints.V2.Airports.Item
         {
             get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.Squawks.SquawksRequestBuilder(PathParameters, RequestAdapter);
         }
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Airports.Item.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The taf property</summary>
         public global::STRIPES.Services.Endpoints.V2.Airports.Item.Taf.TafRequestBuilder Taf
         {
             get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.Taf.TafRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The traffics property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Airports.Item.Traffics.TrafficsRequestBuilder Traffics
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Airports.Item.Traffics.TrafficsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
         /// Instantiates a new <see cref="global::STRIPES.Services.Endpoints.V2.Airports.Item.AirportItemRequestBuilder"/> and sets the default values.

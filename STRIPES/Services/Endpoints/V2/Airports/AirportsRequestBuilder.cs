@@ -6,6 +6,7 @@ using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
 using STRIPES.Services.Endpoints.V2.Airports.All;
 using STRIPES.Services.Endpoints.V2.Airports.Item;
+using STRIPES.Services.Endpoints.V2.Airports.Stats;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace STRIPES.Services.Endpoints.V2.Airports
         public global::STRIPES.Services.Endpoints.V2.Airports.All.AllRequestBuilder All
         {
             get => new global::STRIPES.Services.Endpoints.V2.Airports.All.AllRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Airports.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Airports.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>Gets an item from the STRIPES.Services.Endpoints.v2.airports.item collection</summary>
         /// <param name="position">Airport ICAO code</param>

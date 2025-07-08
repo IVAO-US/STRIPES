@@ -4,6 +4,7 @@ using Microsoft.Kiota.Abstractions.Extensions;
 using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
+using STRIPES.Services.Endpoints.V2.Simulators.Item.Stats;
 using STRIPES.Services.Endpoints.V2.Simulators.Item.Versions;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,11 @@ namespace STRIPES.Services.Endpoints.V2.Simulators.Item
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class SimulatorsItemRequestBuilder : BaseRequestBuilder
     {
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Simulators.Item.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Simulators.Item.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The versions property</summary>
         public global::STRIPES.Services.Endpoints.V2.Simulators.Item.Versions.VersionsRequestBuilder Versions
         {

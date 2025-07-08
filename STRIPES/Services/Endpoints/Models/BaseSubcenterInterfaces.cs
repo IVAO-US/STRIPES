@@ -87,10 +87,10 @@ namespace STRIPES.Services.Endpoints.Models
         /// <summary>The regionMapPolygon property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<UntypedNode>? RegionMapPolygon { get; set; }
+        public UntypedNode? RegionMapPolygon { get; set; }
 #nullable restore
 #else
-        public List<UntypedNode> RegionMapPolygon { get; set; }
+        public UntypedNode RegionMapPolygon { get; set; }
 #endif
         /// <summary>
         /// Instantiates a new <see cref="global::STRIPES.Services.Endpoints.Models.BaseSubcenterInterfaces"/> and sets the default values.
@@ -131,7 +131,7 @@ namespace STRIPES.Services.Endpoints.Models
                 { "position", n => { Position = n.GetStringValue(); } },
                 { "radarRange", n => { RadarRange = n.GetDoubleValue(); } },
                 { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>(global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto.CreateFromDiscriminatorValue)?.AsList(); } },
-                { "regionMapPolygon", n => { RegionMapPolygon = n.GetCollectionOfPrimitiveValues<UntypedNode>()?.AsList(); } },
+                { "regionMapPolygon", n => { RegionMapPolygon = n.GetObjectValue<UntypedNode>(UntypedNode.CreateFromDiscriminatorValue); } },
             };
         }
         /// <summary>
@@ -155,7 +155,7 @@ namespace STRIPES.Services.Endpoints.Models
             writer.WriteStringValue("position", Position);
             writer.WriteDoubleValue("radarRange", RadarRange);
             writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>("regionMap", RegionMap);
-            writer.WriteCollectionOfPrimitiveValues<UntypedNode>("regionMapPolygon", RegionMapPolygon);
+            writer.WriteObjectValue<UntypedNode>("regionMapPolygon", RegionMapPolygon);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

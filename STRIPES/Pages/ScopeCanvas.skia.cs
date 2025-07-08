@@ -2,6 +2,8 @@
 
 using SkiaSharp;
 
+using System.Reflection;
+
 using Uno.WinUI.Graphics2DSK;
 
 using Windows.Foundation;
@@ -10,6 +12,23 @@ namespace STRIPES.Pages;
 
 public class ScopeCanvas : SKCanvasElement
 {
+	decimal _maxLatitude;
+	decimal _minLatitude;
+	decimal _maxLongitude;
+	decimal _minLongitude;
+
+	public void SetBounds(decimal minLat, decimal maxLat, decimal minLon, decimal maxLon)
+	{
+		(_minLatitude, _maxLatitude) = (minLat, maxLat);
+		(_minLongitude, _maxLongitude) = (minLon, maxLon);
+
+		if (IsLoaded)
+			Invalidate();
+	}
+
+	public void CopyBounds(ScopeCanvas other) =>
+		other.SetBounds(_minLatitude, _maxLatitude, _minLongitude, _maxLongitude);
+
 	protected override void RenderOverride(SKCanvas canvas, Size area)
 	{
 		canvas.Clear(SKColor.Empty);
@@ -17,23 +36,18 @@ public class ScopeCanvas : SKCanvasElement
 		if (ScopeData.ControlVolumes.Count == 0)
 			return;
 
-		decimal maxLat = ScopeData.ControlVolumes.Values.Max(static v => v.Max(static decimal (Coordinate c) => c.Latitude));
-		decimal minLat = ScopeData.ControlVolumes.Values.Min(static v => v.Min(static decimal (Coordinate c) => c.Latitude));
-		decimal maxLon = ScopeData.ControlVolumes.Values.Max(static v => v.Max(static decimal (Coordinate c) => c.Longitude));
-		decimal minLon = ScopeData.ControlVolumes.Values.Min(static v => v.Min(static decimal (Coordinate c) => c.Longitude));
+		float screenSize = MathF.Min((float)area.Height, (float)area.Width),
+			  xOffset = ((float)area.Width - screenSize) / 2,
+			  yOffset = ((float)area.Height - screenSize) / 2;
 
-		maxLat += 0.25m;
-		maxLon += 0.25m;
-		minLat -= 0.25m;
-		minLon -= 0.25m;
-
-		float screenSize = MathF.Min((float)area.Height, (float)area.Width);
+		float dLat = (float)(_maxLatitude - _minLatitude);
+		float dLon = (float)(_maxLongitude - _minLongitude);
 
 		SKPoint WorldToScreen(Coordinate coord)
 		{
-			float y = (float)area.Height - (float)((coord.Latitude - minLat) / (maxLat - minLat)) * screenSize;
-			float x = (float)((coord.Longitude - minLon) / (maxLon - minLon)) * screenSize;
-			return new(x, y);
+			float y = (float)area.Height - (float)(coord.Latitude - _minLatitude) / dLat * screenSize;
+			float x = (float)(coord.Longitude - _minLongitude) / dLon * screenSize;
+			return new(x + xOffset, y + yOffset);
 		}
 
 		SKPath controlVolumes = new();

@@ -48,7 +48,7 @@ namespace STRIPES.Services.Endpoints.V2.Users.Me.Aircrafts
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AircraftsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/users/me/aircrafts{?page*,perPage*}", pathParameters)
+        public AircraftsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/users/me/aircrafts{?aircraftId*,page*,perPage*,registration*,selcal*}", pathParameters)
         {
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace STRIPES.Services.Endpoints.V2.Users.Me.Aircrafts
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public AircraftsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/users/me/aircrafts{?page*,perPage*}", rawUrl)
+        public AircraftsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/users/me/aircrafts{?aircraftId*,page*,perPage*,registration*,selcal*}", rawUrl)
         {
         }
         /// <returns>A <see cref="global::STRIPES.Services.Endpoints.Models.PaginatedUserAircraftDto"/></returns>
@@ -156,6 +156,16 @@ namespace STRIPES.Services.Endpoints.V2.Users.Me.Aircrafts
         public partial class AircraftsRequestBuilderGetQueryParameters 
         #pragma warning restore CS1591
         {
+            /// <summary>Type of aircraft (A321, CRJ9, B787)</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("aircraftId")]
+            public string? AircraftId { get; set; }
+#nullable restore
+#else
+            [QueryParameter("aircraftId")]
+            public string AircraftId { get; set; }
+#endif
             /// <summary>The number of the page</summary>
             [QueryParameter("page")]
             public double? Page { get; set; }
@@ -168,6 +178,26 @@ namespace STRIPES.Services.Endpoints.V2.Users.Me.Aircrafts
 #else
             [QueryParameter("perPage")]
             public string PerPage { get; set; }
+#endif
+            /// <summary>Aircraft&apos;s registration</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("registration")]
+            public string? Registration { get; set; }
+#nullable restore
+#else
+            [QueryParameter("registration")]
+            public string Registration { get; set; }
+#endif
+            /// <summary>Aircraft&apos;s selcal</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("selcal")]
+            public string? Selcal { get; set; }
+#nullable restore
+#else
+            [QueryParameter("selcal")]
+            public string Selcal { get; set; }
 #endif
         }
         /// <summary>

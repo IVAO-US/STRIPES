@@ -5,6 +5,7 @@ namespace STRIPES.Pages;
 internal partial class ScopePage : Page
 {
 	public ScopeModel Model => ((ScopeViewModel)DataContext).Model;
+	public ScopeCanvas Canvas => ScpBackground;
 
 	public ScopePage()
 	{

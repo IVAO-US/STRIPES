@@ -5,6 +5,7 @@ using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
 using STRIPES.Services.Endpoints.V2.ATCPositions.Item.Antennas;
+using STRIPES.Services.Endpoints.V2.ATCPositions.Item.Atis;
 using STRIPES.Services.Endpoints.V2.ATCPositions.Item.Fras;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,11 @@ namespace STRIPES.Services.Endpoints.V2.ATCPositions.Item
         public global::STRIPES.Services.Endpoints.V2.ATCPositions.Item.Antennas.AntennasRequestBuilder Antennas
         {
             get => new global::STRIPES.Services.Endpoints.V2.ATCPositions.Item.Antennas.AntennasRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The atis property</summary>
+        public global::STRIPES.Services.Endpoints.V2.ATCPositions.Item.Atis.AtisRequestBuilder Atis
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.ATCPositions.Item.Atis.AtisRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The fras property</summary>
         public global::STRIPES.Services.Endpoints.V2.ATCPositions.Item.Fras.FrasRequestBuilder Fras

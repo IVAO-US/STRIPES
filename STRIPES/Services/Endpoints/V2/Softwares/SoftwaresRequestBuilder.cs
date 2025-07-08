@@ -3,6 +3,7 @@
 using Microsoft.Kiota.Abstractions.Extensions;
 using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.V2.Softwares.Item;
+using STRIPES.Services.Endpoints.V2.Softwares.Stats;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -15,6 +16,11 @@ namespace STRIPES.Services.Endpoints.V2.Softwares
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class SoftwaresRequestBuilder : BaseRequestBuilder
     {
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Softwares.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Softwares.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>Gets an item from the STRIPES.Services.Endpoints.v2.softwares.item collection</summary>
         /// <param name="position">Software type</param>
         /// <returns>A <see cref="global::STRIPES.Services.Endpoints.V2.Softwares.Item.WithTypeItemRequestBuilder"/></returns>

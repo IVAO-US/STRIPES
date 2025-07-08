@@ -43,18 +43,18 @@ namespace STRIPES.Services.Endpoints.Models
         /// <summary>The regionMap property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<global::STRIPES.Services.Endpoints.Models.CenterDto_regionMap>? RegionMap { get; set; }
+        public List<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>? RegionMap { get; set; }
 #nullable restore
 #else
-        public List<global::STRIPES.Services.Endpoints.Models.CenterDto_regionMap> RegionMap { get; set; }
+        public List<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto> RegionMap { get; set; }
 #endif
         /// <summary>The regionMapPolygon property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<UntypedNode>? RegionMapPolygon { get; set; }
+        public UntypedNode? RegionMapPolygon { get; set; }
 #nullable restore
 #else
-        public List<UntypedNode> RegionMapPolygon { get; set; }
+        public UntypedNode RegionMapPolygon { get; set; }
 #endif
         /// <summary>The status property</summary>
         public bool? Status { get; set; }
@@ -87,8 +87,8 @@ namespace STRIPES.Services.Endpoints.Models
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "military", n => { Military = n.GetBoolValue(); } },
                 { "name", n => { Name = n.GetStringValue(); } },
-                { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.CenterDto_regionMap>(global::STRIPES.Services.Endpoints.Models.CenterDto_regionMap.CreateFromDiscriminatorValue)?.AsList(); } },
-                { "regionMapPolygon", n => { RegionMapPolygon = n.GetCollectionOfPrimitiveValues<UntypedNode>()?.AsList(); } },
+                { "regionMap", n => { RegionMap = n.GetCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>(global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto.CreateFromDiscriminatorValue)?.AsList(); } },
+                { "regionMapPolygon", n => { RegionMapPolygon = n.GetObjectValue<UntypedNode>(UntypedNode.CreateFromDiscriminatorValue); } },
                 { "status", n => { Status = n.GetBoolValue(); } },
             };
         }
@@ -103,8 +103,8 @@ namespace STRIPES.Services.Endpoints.Models
             writer.WriteStringValue("id", Id);
             writer.WriteBoolValue("military", Military);
             writer.WriteStringValue("name", Name);
-            writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.CenterDto_regionMap>("regionMap", RegionMap);
-            writer.WriteCollectionOfPrimitiveValues<UntypedNode>("regionMapPolygon", RegionMapPolygon);
+            writer.WriteCollectionOfObjectValues<global::STRIPES.Services.Endpoints.Models.BaseRegionMapDto>("regionMap", RegionMap);
+            writer.WriteObjectValue<UntypedNode>("regionMapPolygon", RegionMapPolygon);
             writer.WriteBoolValue("status", Status);
             writer.WriteAdditionalData(AdditionalData);
         }

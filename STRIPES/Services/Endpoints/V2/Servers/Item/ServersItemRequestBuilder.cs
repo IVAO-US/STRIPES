@@ -4,6 +4,7 @@ using Microsoft.Kiota.Abstractions.Extensions;
 using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
+using STRIPES.Services.Endpoints.V2.Servers.Item.Stats;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,6 +18,11 @@ namespace STRIPES.Services.Endpoints.V2.Servers.Item
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public partial class ServersItemRequestBuilder : BaseRequestBuilder
     {
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Servers.Item.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Servers.Item.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>
         /// Instantiates a new <see cref="global::STRIPES.Services.Endpoints.V2.Servers.Item.ServersItemRequestBuilder"/> and sets the default values.
         /// </summary>

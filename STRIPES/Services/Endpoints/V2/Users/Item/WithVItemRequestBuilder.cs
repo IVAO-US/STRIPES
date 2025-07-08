@@ -6,6 +6,7 @@ using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
 using STRIPES.Services.Endpoints.V2.Users.Item.FlightPlans;
 using STRIPES.Services.Endpoints.V2.Users.Item.Permissions;
+using STRIPES.Services.Endpoints.V2.Users.Item.Sessions;
 using STRIPES.Services.Endpoints.V2.Users.Item.UserStaffPositions;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +30,11 @@ namespace STRIPES.Services.Endpoints.V2.Users.Item
         public global::STRIPES.Services.Endpoints.V2.Users.Item.Permissions.PermissionsRequestBuilder Permissions
         {
             get => new global::STRIPES.Services.Endpoints.V2.Users.Item.Permissions.PermissionsRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The sessions property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Users.Item.Sessions.SessionsRequestBuilder Sessions
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Users.Item.Sessions.SessionsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The userStaffPositions property</summary>
         public global::STRIPES.Services.Endpoints.V2.Users.Item.UserStaffPositions.UserStaffPositionsRequestBuilder UserStaffPositions

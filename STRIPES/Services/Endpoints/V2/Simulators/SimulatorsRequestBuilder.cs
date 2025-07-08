@@ -6,6 +6,7 @@ using Microsoft.Kiota.Abstractions;
 using STRIPES.Services.Endpoints.Models;
 using STRIPES.Services.Endpoints.V2.Simulators.All;
 using STRIPES.Services.Endpoints.V2.Simulators.Item;
+using STRIPES.Services.Endpoints.V2.Simulators.Stats;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace STRIPES.Services.Endpoints.V2.Simulators
         public global::STRIPES.Services.Endpoints.V2.Simulators.All.AllRequestBuilder All
         {
             get => new global::STRIPES.Services.Endpoints.V2.Simulators.All.AllRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The stats property</summary>
+        public global::STRIPES.Services.Endpoints.V2.Simulators.Stats.StatsRequestBuilder Stats
+        {
+            get => new global::STRIPES.Services.Endpoints.V2.Simulators.Stats.StatsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>Gets an item from the STRIPES.Services.Endpoints.v2.simulators.item collection</summary>
         /// <param name="position">Simulator Id</param>

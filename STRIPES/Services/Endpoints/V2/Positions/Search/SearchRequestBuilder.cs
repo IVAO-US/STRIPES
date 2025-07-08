@@ -22,7 +22,7 @@ namespace STRIPES.Services.Endpoints.V2.Positions.Search
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public SearchRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/positions/search{?positionType*,startsWith*}", pathParameters)
+        public SearchRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/positions/search{?composePositionList*,icao*,limit*,positionType*,startsWith*}", pathParameters)
         {
         }
         /// <summary>
@@ -30,7 +30,7 @@ namespace STRIPES.Services.Endpoints.V2.Positions.Search
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public SearchRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/positions/search{?positionType*,startsWith*}", rawUrl)
+        public SearchRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v2/positions/search{?composePositionList*,icao*,limit*,positionType*,startsWith*}", rawUrl)
         {
         }
         /// <returns>A List&lt;global::STRIPES.Services.Endpoints.Models.PositionDto&gt;</returns>
@@ -84,6 +84,22 @@ namespace STRIPES.Services.Endpoints.V2.Positions.Search
         public partial class SearchRequestBuilderGetQueryParameters 
         #pragma warning restore CS1591
         {
+            /// <summary>Return the list of composePositions</summary>
+            [QueryParameter("composePositionList")]
+            public bool? ComposePositionList { get; set; }
+            /// <summary>Airport/Center ICAO code</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("icao")]
+            public string? Icao { get; set; }
+#nullable restore
+#else
+            [QueryParameter("icao")]
+            public string Icao { get; set; }
+#endif
+            /// <summary>Max results of each type (default: 10, max: 100)</summary>
+            [QueryParameter("limit")]
+            public double? Limit { get; set; }
             /// <summary>Position type</summary>
             [Obsolete("This property is deprecated, use PositionTypeAsGetPositionTypeQueryParameterType instead")]
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
