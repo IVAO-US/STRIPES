@@ -9,15 +9,32 @@ internal class CommandContainer
 	private readonly Dictionary<Type, IOmnibarCommand> _activeCommands = [],
 													   _inactiveCommands = [];
 
-	private readonly Dictionary<Type, object> _providedDependencies = [];
+	private readonly IServiceProvider _dependencies;
+	private readonly ServiceDescriptor[] _dependencyDescriptors;
 
 	private HashSet<Type> AvailableTypes => [
 		.._activeCommands.Keys,
 		.._inactiveCommands.Keys,
-		.._providedDependencies.Keys
+		.._dependencyDescriptors
+			.SelectMany<ServiceDescriptor, Type?>(d => [d.ImplementationType, ..d.ImplementationType?.GetInterfaces() ?? []])
+			.Where(d => d is not null)
+			.Cast<Type>()
 	];
 
-	public CommandContainer()
+	public CommandContainer(IHost appHost)
+	{
+		// Get the service list from the host.
+		_dependencies = appHost.Services;
+		dynamic descriptorRoot = typeof(ServiceProvider).GetProperty("Root", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(_dependencies)!;
+		descriptorRoot = descriptorRoot.GetType().GetProperty("RootProvider", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(descriptorRoot)!;
+		descriptorRoot = typeof(ServiceProvider).GetProperty("CallSiteFactory", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(descriptorRoot)!;
+		descriptorRoot = descriptorRoot.GetType().GetProperty("Descriptors", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(descriptorRoot)!;
+		_dependencyDescriptors = (ServiceDescriptor[])descriptorRoot;
+
+		Task.Run(LoadTypes);
+	}
+
+	private void LoadTypes()
 	{
 		// Get all types in the current assembly that match.
 		HashSet<Type> typesToInstance = [.. typeof(OmnibarService).Assembly.GetTypes().Where(t =>
@@ -98,7 +115,7 @@ internal class CommandContainer
 		object[] args = [..ctor.GetParameters().Select(param =>
 			_activeCommands.TryGetValue(param.ParameterType, out var ac) ? ac
 			: _inactiveCommands.TryGetValue(param.ParameterType, out var ic) ? ic
-			: _providedDependencies[param.ParameterType]
+			: _dependencies.GetRequiredService(param.ParameterType)
 		)];
 
 		return (IOmnibarCommand)Activator.CreateInstance(type, args)!;

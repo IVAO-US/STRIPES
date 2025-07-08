@@ -1,11 +1,21 @@
 ﻿using STRIPES.Commands;
 
+using System.Collections.Concurrent;
+
 using IOmnibarCommand = STRIPES.Extensibility.IOmnibarCommand;
 
 namespace STRIPES.Services;
 
-internal sealed class OmnibarService(CommandContainer _commands)
+internal sealed class OmnibarService(CommandContainer _commands) : ITooltipNotifier
 {
+	/// <summary>
+	/// Asynchronously produces tooltips as they're requested.
+	/// </summary>
+	public IEnumerable<string> Tooltips(CancellationToken? tkn = null) =>
+		_pendingTooltips.GetConsumingEnumerable(tkn ?? CancellationToken.None);
+
+	public void Notify(string message) => _pendingTooltips.Add(message);
+
 	/// <summary>
 	/// Called when an omnibar command is submitted.
 	/// </summary>
@@ -47,8 +57,11 @@ internal sealed class OmnibarService(CommandContainer _commands)
 		input = input.Trim();
 		int splitIdx = input.IndexOf(' ');
 
-		if (splitIdx < 0)
+		if (input.StartsWith('.') && (input.Length is 1 || !char.IsDigit(input[1])))
+			splitIdx = 1;
+		else if (splitIdx < 0)
 			splitIdx = input.Length;
+
 
 		string targetId = input[..splitIdx];
 		IOmnibarCommand.CommandTarget target =
@@ -68,4 +81,14 @@ internal sealed class OmnibarService(CommandContainer _commands)
 			foreach (string suggestion in command.GetSuggestions(input))
 				yield return suggestion;
 	}
+
+	readonly BlockingCollection<string> _pendingTooltips = [];
+}
+
+public interface ITooltipNotifier
+{
+	/// <summary>
+	/// Pops a tooltip with the provided <paramref name="message"/> on the screen.
+	/// </summary>
+	public void Notify(string message);
 }

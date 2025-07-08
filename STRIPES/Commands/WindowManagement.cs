@@ -56,14 +56,25 @@ partial record ExitWindow() : IOmnibarCommand
 
 	public Task ProcessCommandAsync(string target, Match input)
 	{
-		if (target is "." or ".0")
-			ApplicationHelper.Windows.First(w => w.Content is not null).Close();
-		else if (ApplicationHelper.Windows.FirstOrDefault(w =>
-					w.Content is ScopeCanvas cnv &&
-					cnv.Tag is string tag &&
-					tag.Equals(target, StringComparison.InvariantCultureIgnoreCase)) is Window victim)
+		if (ApplicationHelper.Windows.GetWindowByTag(target) is Window victim)
 			victim.Close();
 
 		return Task.CompletedTask;
+	}
+}
+
+public static class WindowExtensions
+{
+	public static Window? GetWindowByTag(this IReadOnlyList<Window> windows, string tag)
+	{
+		if (tag is "." or ".0")
+			return windows.First(w => w.Content is not null);
+		else if (windows.FirstOrDefault(w =>
+					w.Content is ScopeCanvas cnv &&
+					cnv.Tag is string cnvTag &&
+					cnvTag.Equals(tag, StringComparison.InvariantCultureIgnoreCase)) is Window win)
+			return win;
+		else
+			return null;
 	}
 }

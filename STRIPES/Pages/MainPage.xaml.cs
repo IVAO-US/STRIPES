@@ -15,22 +15,6 @@ internal partial record MainModel(IAuthenticationService AuthenticationService, 
 	public IState<string> SelectedPosition => State<string>.Value(this, () => "");
 	public IState<string> PositionAuthorisationMessage => State<string>.Value(this, () => "No checks performed");
 	public IState<bool> PositionAuthorised => State<bool>.Value(this, () => false);
-
-	public async Task GetPositionAuthMessageAsync(CancellationToken tkn)
-	{
-		if (await SelectedPosition is not string pos)
-			return;
-
-		(bool authed, string authMessage) = await IvaoApi.FraCheckAsync(pos);
-		await PositionAuthorised.Update(c => authed, tkn);
-		await PositionAuthorisationMessage.Update(c => authMessage, tkn);
-
-		if (authed)
-		{
-			await Ivan.ConnectAsync(pos);
-			await Navigator.NavigateViewAsync<ScopePage>(this, cancellation: tkn);
-		}
-	}
 }
 
 public class SuccessFailBrushConverter : IValueConverter

@@ -49,7 +49,7 @@ public interface IOmnibarCommand
 	/// </code>
 	/// </example>
 	protected static IEnumerable<string> PrefixSuggestions(string input, string keyword) =>
-		input.Length< keyword.Length && keyword[..input.Length].Equals(input, StringComparison.InvariantCultureIgnoreCase)
+		keyword.StartsWith(input, StringComparison.InvariantCultureIgnoreCase)
 		? [keyword]
 		: [];
 

@@ -98,6 +98,7 @@ public partial class App : Application
 					services.AddSingleton(new SettingsService(context.Configuration));
 					services.AddSingleton<IvanConnectionService>();
 					services.AddSingleton<OmnibarService>();
+					services.AddSingleton<ITooltipNotifier>(s => s.GetRequiredService<OmnibarService>());
 					services.AddSingleton<CommandContainer>();
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
@@ -126,8 +127,8 @@ public partial class App : Application
 		);
 
 		routes.Register(new RouteMap("", View: views.FindByViewModel<ShellModel>(), Nested: [
-			new("Main", View: views.FindByViewModel<MainModel>(), IsDefault: true),
-			new("Scope", View: views.FindByViewModel<ScopeModel>())
+			new("Main", View: views.FindByViewModel<MainModel>()),
+			new("Scope", View: views.FindByViewModel<ScopeModel>(), IsDefault: true)
 		]));
 	}
 }

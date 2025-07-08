@@ -5,30 +5,40 @@
 	  xmlns:service="using:STRIPES.Services"
 	  NavigationCacheMode="Required"
 	  GotFocus="Page_GotFocus"
+	  Loaded="Page_Loaded"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Page.Resources>
+		<Storyboard x:Name="StbFadeTooltip">
+			<DoubleAnimation Storyboard.TargetName="TtpPopup"
+							 Storyboard.TargetProperty="Opacity"
+							 From="1.0" To="0.0" Duration="0:0:3" />
+		</Storyboard>
+	</Page.Resources>
+	
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<StackPanel Orientation="Horizontal"
-					HorizontalAlignment="Center"
-					Height="32"
-					Grid.Row="0">
-			<Button Content="Load Volumes" 
-					Command="{Binding LoadControlVolumesAsync}"/>
-		</StackPanel>
-
-		<local:ScopeCanvas x:Name="ScpBackground" Grid.Row="1"
+		<local:ScopeCanvas x:Name="ScpBackground" Grid.Row="0"
 						   GotFocus="Page_GotFocus"/>
 
-		<AutoSuggestBox x:Name="AsbOmnibar" Grid.Row="2"
+		<AutoSuggestBox x:Name="AsbOmnibar" Grid.Row="1"
 						PlaceholderText="Command…"
 						QueryIcon="Go"
 						QuerySubmitted="{x:Bind Model.Omnibar.QuerySubmittedAsync}"
 						SuggestionChosen="{x:Bind service:OmnibarService.SuggestionChosen}"
 						TextChanged="{x:Bind Model.Omnibar.TextChanged}"/>
+
+		<TeachingTip x:Name="TtpPopup"
+					 Subtitle="{Binding Tooltip}"
+					 Target="{x:Bind AsbOmnibar}"
+					 PreferredPlacement="Top"
+					 IsLightDismissEnabled="True">
+			<TeachingTip.IconSource>
+				<SymbolIconSource Symbol="Important" />
+			</TeachingTip.IconSource>
+		</TeachingTip>
 	</Grid>
 </Page>
