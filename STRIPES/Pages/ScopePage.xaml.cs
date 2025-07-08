@@ -10,6 +10,8 @@ namespace STRIPES.Pages;
 
 internal partial class ScopePage : Page
 {
+	public ScopeModel Model => ((ScopeViewModel)DataContext).Model;
+
 	public ScopePage()
 	{
 		InitializeComponent();
@@ -17,27 +19,10 @@ internal partial class ScopePage : Page
 		AsbOmnibar.Focus(FocusState.Keyboard);
 	}
 
-	private void SpawnButton_Click(object sender, RoutedEventArgs e)
-	{
-		// Create and launch a window.
-		ScopeCanvas childScope = new();
-		ScopeData.Invalidated += () => {
-			try { childScope.Invalidate(); }
-			catch { }
-		};
-
-		Window window = new() {
-			Content = childScope
-		};
-
-		window.Closed += (_, _) => window.Content = null;
-		window.Activate();
-	}
-
 	private void Page_GotFocus(object sender, RoutedEventArgs e) => AsbOmnibar.Focus(FocusState.Keyboard);
 }
 
-internal partial record ScopeModel(IvaoApiService IvaoApi, IvanConnectionService Ivan)
+internal partial record ScopeModel(IvaoApiService IvaoApi, IvanConnectionService Ivan, OmnibarService Omnibar)
 {
 	public async Task LoadControlVolumesAsync()
 	{

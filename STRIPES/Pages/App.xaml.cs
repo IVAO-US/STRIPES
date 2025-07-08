@@ -1,5 +1,8 @@
 ﻿using IdentityModel.OidcClient.Browser;
 using Microsoft.Extensions.Configuration;
+
+using STRIPES.Commands;
+
 using Uno.Resizetizer;
 
 using static Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions;
@@ -94,6 +97,8 @@ public partial class App : Application
 					services.AddSingleton<IvaoApiService>();
 					services.AddSingleton(new SettingsService(context.Configuration));
 					services.AddSingleton<IvanConnectionService>();
+					services.AddSingleton<OmnibarService>();
+					services.AddSingleton<CommandContainer>();
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);
@@ -116,11 +121,13 @@ public partial class App : Application
 	{
 		views.Register(
 			new ViewMap(ViewModel: typeof(ShellModel)),
-			new ViewMap<MainPage, MainModel>()
+			new ViewMap<MainPage, MainModel>(),
+			new ViewMap<ScopePage, ScopeModel>()
 		);
 
 		routes.Register(new RouteMap("", View: views.FindByViewModel<ShellModel>(), Nested: [
-			new("Main", View: views.FindByViewModel<MainModel>(), IsDefault: true)
+			new("Main", View: views.FindByViewModel<MainModel>(), IsDefault: true),
+			new("Scope", View: views.FindByViewModel<ScopeModel>())
 		]));
 	}
 }
