@@ -48,7 +48,10 @@ internal sealed class OmnibarService(CommandContainer _commands) : ITooltipNotif
 			return;
 
 		var (target, prefix, command) = SplitCommand(sender.Text);
-		sender.ItemsSource = GetSuggestions(target, command).Take(10).Select(s => prefix + ' ' + s);
+		sender.ItemsSource = GetSuggestions(target, command).Take(10).Select(s => prefix switch {
+			"." => $".{s}",
+			_ => prefix + ' ' + s
+		});
 	}
 
 	/// <summary>Splits the <paramref name="input"/> into a target and a command.</summary>
@@ -75,9 +78,6 @@ internal sealed class OmnibarService(CommandContainer _commands) : ITooltipNotif
 
 	private IEnumerable<string> GetSuggestions(IOmnibarCommand.CommandTarget target, string input)
 	{
-		if (string.IsNullOrWhiteSpace(input))
-			yield break;
-
 		foreach (IOmnibarCommand command in _commands.Get(target))
 			foreach (string suggestion in command.GetSuggestions(input))
 				yield return suggestion;

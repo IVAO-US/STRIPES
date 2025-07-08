@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 
 using STRIPES.Commands;
+using STRIPES.Extensibility;
 
 using Uno.Resizetizer;
 
