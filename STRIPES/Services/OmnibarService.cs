@@ -1,4 +1,5 @@
 ﻿using STRIPES.Commands;
+using STRIPES.Extensibility;
 
 using System.Collections.Concurrent;
 
@@ -83,12 +84,4 @@ internal sealed class OmnibarService(CommandContainer _commands) : ITooltipNotif
 	}
 
 	readonly BlockingCollection<string> _pendingTooltips = [];
-}
-
-public interface ITooltipNotifier
-{
-	/// <summary>
-	/// Pops a tooltip with the provided <paramref name="message"/> on the screen.
-	/// </summary>
-	public void Notify(string message);
 }
