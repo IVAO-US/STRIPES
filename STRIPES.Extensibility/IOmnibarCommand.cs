@@ -38,6 +38,21 @@ public interface IOmnibarCommand
 	/// <param name="input">The results of matching the omnibar input against <see cref="GetCommandRegex"/>.</param>
 	public Task ProcessCommandAsync(string target, Match input);
 
+	/// <summary>
+	/// Helper method to provide suggestions for basic keyword commands.
+	/// </summary>
+	/// <param name="input">The omnibar input passed to <see cref="GetSuggestions(string)"/>.</param>
+	/// <param name="keyword">The keyword to suggest when the input is a prefix of it.</param>
+	/// <example>
+	///	<code>
+	///	public IEnumerable&lt;string&gt; GetSuggestions(string input) => PrefixSuggestions(input, "SPAWN");
+	/// </code>
+	/// </example>
+	protected static IEnumerable<string> PrefixSuggestions(string input, string keyword) =>
+		input.Length< keyword.Length && keyword[..input.Length].Equals(input, StringComparison.InvariantCultureIgnoreCase)
+		? [keyword]
+		: [];
+
 	[Flags]
 	public enum CommandTarget
 	{
