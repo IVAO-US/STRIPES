@@ -446,7 +446,7 @@ public record struct Coordinate(decimal Latitude, decimal Longitude) : IProcedur
 			throw new NotImplementedException();
 	}
 
-	public override string ToString() => $"({Latitude:00.000}, {Longitude:000.000})";
+	public readonly override string ToString() => $"({Latitude:00.000}, {Longitude:000.000})";
 
 	public class CoordinateJsonConverter : JsonConverter<Coordinate>
 	{

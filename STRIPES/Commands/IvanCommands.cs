@@ -1,12 +1,7 @@
-﻿using CIFPReader;
-
-using Microsoft.Kiota.Abstractions.Serialization;
-
-using STRIPES.Commands.WindowManagement;
+﻿using STRIPES.Commands.WindowManagement;
 using STRIPES.Extensibility;
 using STRIPES.Services.Endpoints.Models;
 
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace STRIPES.Commands;

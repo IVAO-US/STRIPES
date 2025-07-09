@@ -16,7 +16,10 @@ internal class CommandContainer
 		.._activeCommands.Keys,
 		.._inactiveCommands.Keys,
 		.._dependencyDescriptors
-			.SelectMany<ServiceDescriptor, Type?>(d => [d.ImplementationType, ..d.ImplementationType?.GetInterfaces() ?? []])
+			.SelectMany<ServiceDescriptor, Type?>(d => {
+				Type[] interfaces = d.ImplementationType?.GetInterfaces() ?? [];
+				return [d.ImplementationType, d.ServiceType, ..interfaces];
+			})
 			.Where(d => d is not null)
 			.Cast<Type>()
 	];

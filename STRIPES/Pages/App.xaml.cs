@@ -101,6 +101,14 @@ public partial class App : Application
 					services.AddSingleton<OmnibarService>();
 					services.AddSingleton<ITooltipNotifier>(s => s.GetRequiredService<OmnibarService>());
 					services.AddSingleton<CommandContainer>();
+					services.AddSingleton<OsmTileProvider>();
+					services.AddSingleton<HttpClient>(static _ => {
+						HttpClient instance = new();
+						instance.DefaultRequestHeaders.UserAgent.TryParseAdd(
+							$"ivao-stripes/{typeof(App).Assembly.GetName().Version ?? new(0, 0, 0)}"
+						);
+						return instance;
+					});
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);

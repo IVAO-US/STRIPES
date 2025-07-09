@@ -1,11 +1,7 @@
-﻿using CIFPReader;
-
-using Microsoft.Kiota.Abstractions.Serialization;
-
+﻿using STRIPES.Extensibility;
 using STRIPES.Services.Endpoints.Models;
 
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
 
 namespace STRIPES.Services;
 
@@ -160,7 +156,7 @@ public sealed record AtcInfo(string Callsign, string RadiotelephonyIdentifier, d
 		subcenter.AtcCallsign ?? "",
 		(decimal)subcenter.Frequency!,
 		new((decimal)subcenter.Latitude!, (decimal)subcenter.Longitude!),
-		[..subcenter.RegionMap?.Select(pair => new Coordinate((decimal)pair.Lat!, (decimal)pair.Lng!)) ?? []]
+		[.. subcenter.RegionMap?.Select(pair => new Coordinate((decimal)pair.Lat!, (decimal)pair.Lng!)) ?? []]
 	)
 	{ }
 
@@ -169,7 +165,7 @@ public sealed record AtcInfo(string Callsign, string RadiotelephonyIdentifier, d
 		atcPosition.AtcCallsign ?? "",
 		(decimal)atcPosition.Frequency!,
 		new((decimal)atcPosition.Airport!.Latitude!, (decimal)atcPosition.Airport.Longitude!),
-		[..atcPosition.RegionMap?.Select(pair => new Coordinate((decimal)pair.Lat!, (decimal)pair.Lng!)) ?? []]
+		[.. atcPosition.RegionMap?.Select(pair => new Coordinate((decimal)pair.Lat!, (decimal)pair.Lng!)) ?? []]
 	)
 	{ }
 }
