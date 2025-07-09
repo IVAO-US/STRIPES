@@ -36,6 +36,7 @@
 		<UserSecretsId>13c0c401-e6ab-42a1-8ffd-994aee27a977</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+	  <PackageReference Include="Google.Protobuf" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 	</ItemGroup>
 	<ItemGroup>
