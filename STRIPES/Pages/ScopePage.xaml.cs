@@ -10,7 +10,7 @@ internal partial class ScopePage : Page
 	public ScopePage()
 	{
 		InitializeComponent();
-		ScopeData.Invalidated += ScpBackground.Invalidate;
+		ScopeData.Invalidated += () => { System.Diagnostics.Debug.WriteLine("Invalidation triggered"); ScpBackground.Invalidate(); };
 		AsbOmnibar.Focus(FocusState.Keyboard);
 	}
 

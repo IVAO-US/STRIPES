@@ -36,6 +36,7 @@ internal sealed partial record IvanCommands(IvaoApiService IvaoApi, IvanConnecti
 			if (await IvaoApi.GetWebeyeShapeAsync(Ivan.Callsign) is not (string atcPos, Coordinate[] coordList))
 				return;
 
+			ScopeData.BeginUpdate();
 			ScopeData.ControlVolumes.Clear();
 			ScopeData.ControlVolumes[atcPos] = coordList;
 
@@ -47,8 +48,8 @@ internal sealed partial record IvanCommands(IvaoApiService IvaoApi, IvanConnecti
 				ScopeData.ControlVolumes[callsign] = [.. coords];
 			}
 
-			var (minLat, maxLat) = (coordList.Min(static c => c.Latitude) - 0.2m, coordList.Max(static c => c.Latitude) + 0.2m);
-			var (minLon, maxLon) = (coordList.Min(static c => c.Longitude) - 0.2m, coordList.Max(static c => c.Longitude) + 0.2m);
+			var (minLat, maxLat) = (Math.Clamp(coordList.Min(static c => c.Latitude), -85m, 85m), Math.Clamp(coordList.Max(static c => c.Latitude), -85m, 85m));
+			var (minLon, maxLon) = (Math.Clamp(coordList.Min(static c => c.Longitude), -180m, 180m), Math.Clamp(coordList.Max(static c => c.Longitude), -180m, 180m));
 
 			if (ApplicationHelper.Windows.GetCanvasByWindow(".") is ScopeCanvas mainScope)
 				mainScope.SetBounds(minLat, maxLat, minLon, maxLon);
@@ -56,6 +57,7 @@ internal sealed partial record IvanCommands(IvaoApiService IvaoApi, IvanConnecti
 			foreach (ScopeCanvas canvas in ApplicationHelper.Windows.Where(static w => w.Content is ScopeCanvas).Select(static w => w.Content).Cast<ScopeCanvas>())
 				canvas.SetBounds(minLat, maxLat, minLon, maxLon);
 
+			ScopeData.EndUpdate();
 			Tooltip.Notify("Polygon loading complete!");
 		}
 		else

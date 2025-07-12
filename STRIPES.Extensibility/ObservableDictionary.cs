@@ -11,6 +11,18 @@ public sealed class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValu
 	public ObservableDictionary(Dictionary<TKey, TValue> backing) => _backing = backing;
 	public ObservableDictionary() : this([]) { }
 
+	private bool _updating = false;
+	private bool _updateTriggered = false;
+
+	public void BeginUpdate() => _updating = true;
+	public void EndUpdate()
+	{
+		if (_updateTriggered)
+			Modified?.Invoke(this, new(ObservableDictionaryModifiedEventArgs<TKey, TValue>.Modification.Modified, null));
+
+		(_updating, _updateTriggered) = (false, false);
+	}
+
 	public void Add(TKey key, TValue value) => Add(new(key, value));
 
 	public bool ContainsKey(TKey key) => _backing.ContainsKey(key);
@@ -80,13 +92,22 @@ public sealed class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValu
 	private void Update(ObservableDictionaryModifiedEventArgs<TKey, TValue>.Modification type, KeyValuePair<TKey, TValue>? entry, Action update)
 	{
 		update();
-		Modified?.Invoke(this, new(type, entry));
+
+		if (_updating)
+			_updateTriggered = true;
+		else
+			Modified?.Invoke(this, new(type, entry));
 	}
 
 	private T Update<T>(ObservableDictionaryModifiedEventArgs<TKey, TValue>.Modification type, KeyValuePair<TKey, TValue>? entry, Func<T> update)
 	{
 		T result = update();
-		Modified?.Invoke(this, new(type, entry));
+
+		if (_updating)
+			_updateTriggered = true;
+		else
+			Modified?.Invoke(this, new(type, entry));
+
 		return result;
 	}
 }

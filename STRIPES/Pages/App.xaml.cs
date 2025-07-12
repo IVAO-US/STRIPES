@@ -101,7 +101,6 @@ public partial class App : Application
 					services.AddSingleton<OmnibarService>();
 					services.AddSingleton<ITooltipNotifier>(s => s.GetRequiredService<OmnibarService>());
 					services.AddSingleton<CommandContainer>();
-					services.AddSingleton<OsmTileProvider>();
 					services.AddSingleton<HttpClient>(static _ => {
 						HttpClient instance = new();
 						instance.DefaultRequestHeaders.UserAgent.TryParseAdd(
@@ -109,17 +108,23 @@ public partial class App : Application
 						);
 						return instance;
 					});
+					services.AddSingleton<OsmTileProvider>();
 				})
 				.UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
 			);
+
 		MainWindow = builder.Window;
+		MainWindow.SetWindowIcon();
 
 #if DEBUG
 		MainWindow.UseStudio();
 #endif
-		MainWindow.SetWindowIcon();
 
 		Host = await builder.NavigateAsync<Shell>();
+
+		// Try to force the tiles to load ASAP!
+		_ = Host.Services.GetService<OsmTileProvider>();
+
 		MainWindow.Closed += async (_, _) => {
 			await Host.StopAsync();
 			Host.Dispose();
